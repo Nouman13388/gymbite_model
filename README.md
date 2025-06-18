@@ -1,4 +1,4 @@
-# 🏋️ Enhanced Gymbite ML Model
+# 🏋️ Gymbite ML Model
 
 A comprehensive machine learning system for personalized nutrition and diet recommendations with advanced feature engineering, multi-output predictions, and built-in safety validation.
 
