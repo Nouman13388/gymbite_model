@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.multioutput import MultiOutputRegressor
-from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import joblib
 
 def calculate_bmr(age, weight, height, gender):
@@ -133,15 +133,33 @@ def train_enhanced_model(df):
     base_model = RandomForestRegressor(n_estimators=100, random_state=42)
     model = MultiOutputRegressor(base_model)
     model.fit(X_train, y_train)
-    
-    # Evaluate
+      # Evaluate with comprehensive accuracy metrics
     y_pred = model.predict(X_test)
     
-    print(f"\n📈 Model Performance:")
+    print(f"\n📈 Model Performance & Accuracy:")
+    print("=" * 45)
+    
+    overall_accuracies = []
+    
     for i, target in enumerate(target_cols):
-        r2 = r2_score(y_test.iloc[:, i], y_pred[:, i])
-        mae = mean_absolute_error(y_test.iloc[:, i], y_pred[:, i])
-        print(f"  {target}: R² = {r2:.3f}, MAE = {mae:.1f}")
+        y_true = y_test.iloc[:, i]
+        y_pred_single = y_pred[:, i]
+        
+        # Calculate metrics
+        r2 = r2_score(y_true, y_pred_single)
+        mae = mean_absolute_error(y_true, y_pred_single)
+        
+        # Calculate percentage accuracy (within 10% tolerance)
+        percentage_error = np.abs((y_true - y_pred_single) / y_true) * 100
+        accuracy_10pct = np.mean(percentage_error <= 10) * 100
+        overall_accuracies.append(accuracy_10pct)
+        
+        print(f"  {target}: R² = {r2:.3f}, MAE = {mae:.1f}, Accuracy = {accuracy_10pct:.1f}%")
+    
+    # Overall accuracy
+    overall_accuracy = np.mean(overall_accuracies)
+    print(f"\n🏆 Overall Model Accuracy: {overall_accuracy:.1f}% (±10% tolerance)")
+    print(f"📊 Quality Rating: {'Excellent' if overall_accuracy > 90 else 'Good' if overall_accuracy > 80 else 'Fair'}")
     
     # Save model
     joblib.dump((model, feature_cols, target_cols), 'simple_enhanced_model.pkl')
@@ -197,6 +215,118 @@ def predict_nutrition(user_data, model, feature_cols):
         'health_risk': round(health_risk),
         'activity_level': round(activity_score, 1)
     }
+
+def generate_meal_plan(prediction, user_name="User"):
+    """Generate a sample meal plan based on nutrition predictions"""
+    calories = prediction['calories']
+    protein = prediction['protein']
+    carbs = prediction['carbs']
+    fats = prediction['fats']
+    
+    # Meal distribution percentages
+    breakfast_pct = 0.25  # 25% of daily nutrition
+    lunch_pct = 0.35      # 35% of daily nutrition
+    dinner_pct = 0.30     # 30% of daily nutrition
+    snacks_pct = 0.10     # 10% of daily nutrition
+    
+    # Calculate nutrition per meal
+    meals = {
+        "🌅 Breakfast": {
+            "calories": round(calories * breakfast_pct),
+            "protein": round(protein * breakfast_pct, 1),
+            "carbs": round(carbs * breakfast_pct, 1),
+            "fats": round(fats * breakfast_pct, 1)
+        },
+        "🍽️ Lunch": {
+            "calories": round(calories * lunch_pct),
+            "protein": round(protein * lunch_pct, 1),
+            "carbs": round(carbs * lunch_pct, 1),
+            "fats": round(fats * lunch_pct, 1)
+        },
+        "🌙 Dinner": {
+            "calories": round(calories * dinner_pct),
+            "protein": round(protein * dinner_pct, 1),
+            "carbs": round(carbs * dinner_pct, 1),
+            "fats": round(fats * dinner_pct, 1)
+        },
+        "🍎 Snacks": {
+            "calories": round(calories * snacks_pct),
+            "protein": round(protein * snacks_pct, 1),
+            "carbs": round(carbs * snacks_pct, 1),
+            "fats": round(fats * snacks_pct, 1)
+        }
+    }
+    
+    # Sample food recommendations based on macro targets
+    food_database = {
+        "high_protein": ["Chicken breast", "Greek yogurt", "Eggs", "Salmon", "Tofu", "Lean beef", "Cottage cheese"],
+        "high_carbs": ["Oatmeal", "Brown rice", "Sweet potato", "Quinoa", "Whole wheat bread", "Fruits", "Pasta"],
+        "high_fats": ["Avocado", "Nuts", "Olive oil", "Seeds", "Nut butter", "Fatty fish"],
+        "balanced": ["Mixed vegetables", "Salad", "Soup", "Smoothie"]
+    }
+    
+    # Generate meal suggestions
+    meal_plans = {
+        "🌅 Breakfast": [
+            f"• {food_database['high_carbs'][0]} with {food_database['high_protein'][1]}",
+            f"• {food_database['high_protein'][2]} with {food_database['high_carbs'][5]}",
+            f"• {food_database['balanced'][3]} with {food_database['high_protein'][1]}"
+        ],
+        "🍽️ Lunch": [
+            f"• {food_database['high_protein'][0]} with {food_database['high_carbs'][1]}",
+            f"• {food_database['high_protein'][3]} with {food_database['high_carbs'][3]}",
+            f"• {food_database['balanced'][1]} with {food_database['high_protein'][5]}"
+        ],
+        "🌙 Dinner": [
+            f"• {food_database['high_protein'][5]} with {food_database['high_carbs'][2]}",
+            f"• {food_database['high_protein'][4]} with {food_database['high_carbs'][6]}",
+            f"• {food_database['high_protein'][3]} with {food_database['balanced'][0]}"
+        ],
+        "🍎 Snacks": [
+            f"• {food_database['high_fats'][1]} with {food_database['high_carbs'][5]}",
+            f"• {food_database['high_protein'][6]} with {food_database['balanced'][0]}",
+            f"• {food_database['high_fats'][4]} with {food_database['high_carbs'][4]}"
+        ]
+    }
+    
+    return meals, meal_plans
+
+def display_meal_plan(prediction, user_name="User"):
+    """Display a complete meal plan recommendation"""
+    meals, meal_plans = generate_meal_plan(prediction, user_name)
+    
+    print(f"\n🍽️ PERSONALIZED MEAL PLAN for {user_name}")
+    print("=" * 50)
+    
+    for meal_name, nutrition in meals.items():
+        print(f"\n{meal_name}")
+        print(f"  📊 Target: {nutrition['calories']} kcal | {nutrition['protein']}g protein | {nutrition['carbs']}g carbs | {nutrition['fats']}g fats")
+        print(f"  💡 Suggestions:")
+        for suggestion in meal_plans[meal_name]:
+            print(f"    {suggestion}")
+    
+    print(f"\n📋 DAILY SUMMARY")
+    print(f"  🎯 Total Daily Target: {prediction['calories']} kcal")
+    print(f"  🥩 Protein: {prediction['protein']}g ({(prediction['protein']*4/prediction['calories']*100):.1f}%)")
+    print(f"  🍞 Carbs: {prediction['carbs']}g ({(prediction['carbs']*4/prediction['calories']*100):.1f}%)")
+    print(f"  🥑 Fats: {prediction['fats']}g ({(prediction['fats']*9/prediction['calories']*100):.1f}%)")
+    
+    # Additional tips based on goals
+    if prediction['health_risk'] > 50:
+        print(f"\n⚠️ HEALTH-FOCUSED TIPS:")
+        print(f"  • Focus on whole foods, limit processed items")
+        print(f"  • Increase vegetables and lean proteins")
+        print(f"  • Consider consulting with a healthcare provider")
+    elif prediction['activity_level'] > 7:
+        print(f"\n💪 PERFORMANCE TIPS:")
+        print(f"  • Time carbs around workouts for energy")
+        print(f"  • Include protein post-workout for recovery")
+        print(f"  • Stay hydrated, especially during exercise")
+    else:
+        print(f"\n🌱 GENERAL WELLNESS TIPS:")
+        print(f"  • Focus on balanced meals with all macros")
+        print(f"  • Include variety of colorful vegetables")
+        print(f"  • Maintain consistent meal timing")
 
 def demo_comparison():
     """Demo showing original vs enhanced approach"""
@@ -264,15 +394,16 @@ def demo_comparison():
         print(f"\n🥧 Macro Distribution:")
         print(f"  Protein: {protein_pct:.1f}% (muscle building)")
         print(f"  Carbs: {carbs_pct:.1f}% (energy)")
-        print(f"  Fats: {fats_pct:.1f}% (hormones, vitamins)")
-        
-        # Health recommendations
+        print(f"  Fats: {fats_pct:.1f}% (hormones, vitamins)")        # Health recommendations
         if prediction['health_risk'] < 25:
             print(f"✅ Health Status: Excellent!")
         elif prediction['health_risk'] < 50:
             print(f"💡 Health Tip: Focus on reducing risk factors")
         else:
             print(f"⚠️ Health Alert: Consider consulting healthcare provider")
+        
+        # Display meal plan for this user
+        display_meal_plan(prediction, user['name'])
 
 if __name__ == "__main__":
     demo_comparison()

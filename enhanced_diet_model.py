@@ -1,3 +1,16 @@
+test_users = [
+    {
+        "name": "Sarah (28F, Active, Weight Loss Goal)",
+        "data": {
+            'Age': 28, 'Gender': 'Female', 'Height_cm': 165,
+            'Weight_kg': 75, 'Exercise_Frequency': 5
+            # ... complete profile
+        }
+    }
+]
+
+
+
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -7,7 +20,7 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.multioutput import MultiOutputRegressor
-from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import joblib
 
 class EnhancedDietPredictor:
@@ -153,15 +166,51 @@ class EnhancedDietPredictor:
         base_model = RandomForestRegressor(n_estimators=100, random_state=42)
         self.model = MultiOutputRegressor(base_model)
         self.model.fit(X_train, y_train)
-        
-        # Evaluate model
+          # Evaluate model
         y_pred = self.model.predict(X_test)
         
-        print("\n📈 Model Performance:")
+        print("\n📈 Model Performance & Accuracy:")
+        print("=" * 50)
+        
+        overall_accuracies = []
+        
         for i, target in enumerate(self.target_names):
-            r2 = r2_score(y_test.iloc[:, i], y_pred[:, i])
-            mae = mean_absolute_error(y_test.iloc[:, i], y_pred[:, i])
-            print(f"  {target}: R² = {r2:.3f}, MAE = {mae:.1f}")
+            y_true = y_test.iloc[:, i]
+            y_pred_single = y_pred[:, i]
+            
+            # Calculate metrics
+            r2 = r2_score(y_true, y_pred_single)
+            mae = mean_absolute_error(y_true, y_pred_single)
+            rmse = np.sqrt(mean_squared_error(y_true, y_pred_single))
+            
+            # Calculate percentage accuracy (within 10% tolerance)
+            percentage_error = np.abs((y_true - y_pred_single) / y_true) * 100
+            accuracy_10pct = np.mean(percentage_error <= 10) * 100
+            
+            # Calculate mean percentage error
+            mape = np.mean(percentage_error)
+            
+            # Store overall accuracy
+            overall_accuracies.append(accuracy_10pct)
+            
+            print(f"\n🎯 {target.replace('Recommended_', '')}:")
+            print(f"   • R² Score: {r2:.3f} ({r2*100:.1f}% variance explained)")
+            print(f"   • Accuracy (±10%): {accuracy_10pct:.1f}% of predictions")
+            print(f"   • Mean Absolute Error: {mae:.1f}")
+            print(f"   • Root Mean Square Error: {rmse:.1f}")
+            print(f"   • Mean Percentage Error: {mape:.1f}%")
+        
+        # Overall model accuracy
+        overall_accuracy = np.mean(overall_accuracies)
+        print(f"\n🏆 OVERALL MODEL ACCURACY:")
+        print(f"   • Average Accuracy (±10% tolerance): {overall_accuracy:.1f}%")
+        print(f"   • Model Quality: {'Excellent' if overall_accuracy > 90 else 'Good' if overall_accuracy > 80 else 'Fair' if overall_accuracy > 70 else 'Needs Improvement'}")
+        
+        # Additional accuracy interpretation
+        print(f"\n💡 Accuracy Explanation:")
+        print(f"   • R² = {np.mean([r2_score(y_test.iloc[:, i], y_pred[:, i]) for i in range(len(self.target_names))]):.3f} means {np.mean([r2_score(y_test.iloc[:, i], y_pred[:, i]) for i in range(len(self.target_names))])*100:.1f}% of nutrition variance is explained")
+        print(f"   • {overall_accuracy:.1f}% of predictions are within 10% of actual values")
+        print(f"   • This is considered {'professional-grade' if overall_accuracy > 85 else 'good' if overall_accuracy > 75 else 'adequate'} accuracy for nutrition prediction")
         
         return X_test, y_test, y_pred
     
