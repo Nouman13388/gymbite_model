@@ -20,6 +20,10 @@ dist/
 *.pkl
 *.joblib
 
+# Explicit model files created by training (ignore these large binaries)
+enhanced_diet_predictor.pkl
+simple_enhanced_model.pkl
+
 # Logs
 *.log
 logs/
@@ -58,3 +62,4 @@ secrets.json
 
 # Ignore compiled wheel files
 *.whl
+
