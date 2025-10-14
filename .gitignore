@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Python package build artifacts
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Model artifacts and pickles
+*.pkl
+*.joblib
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor files
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Data exports (safe to ignore if you keep copies elsewhere)
+*.csv
+
+# Python cache
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Coverage
+.coverage
+htmlcov/
+
+# Environment variables
+.env
+
+# Others
+*.sqlite3
+
+# Ignore any secrets file
+secrets.json
+
+# Ignore model visualization images if generated at runtime
+*.png
+
+# Ignore compiled wheel files
+*.whl
