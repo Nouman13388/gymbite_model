@@ -1,0 +1,30 @@
+# Python and virtualenv
+.venv/
+venv/
+ENV/
+
+# Git
+.git
+
+# Python cache / bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Editor directories
+.vscode/
+.idea/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Model artifacts (use Git LFS or external storage)
+*.pkl
+*.joblib
+
+# OS files
+.DS_Store
+Thumbs.db
