@@ -2,6 +2,8 @@
 
 # 🏋️‍♂️ Gymbite ML Nutrition Recommendation System
 
+[![CI](https://github.com/Nouman13388/gymbite_model/actions/workflows/pytest.yml/badge.svg?branch=dev)](https://github.com/Nouman13388/gymbite_model/actions/workflows/pytest.yml)
+
 Personalized nutrition & meal planning powered by **Multi-Output Machine Learning** (calories, protein, carbs, fats) with **97% calorie accuracy**, **safety validation**, and **automated meal plan generation**. Designed for both **stakeholders** and **developers**—ready for integration into **Flutter/mobile**, **web APIs**, or **enterprise platforms**.
 
 ---
