@@ -48,7 +48,8 @@ def create_app() -> FastAPI:
 
         try:
             # predictor.predict expects a dict-like input as in your README
-            result = pred_service.predict(inp.dict())
+            # Use Pydantic v2's `model_dump()` to avoid v1 `dict()` deprecation
+            result = pred_service.predict(inp.model_dump())
             return result
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
