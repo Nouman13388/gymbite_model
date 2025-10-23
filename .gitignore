@@ -17,12 +17,14 @@ dist/
 .ipynb_checkpoints/
 
 # Model artifacts and pickles
-*.pkl
 *.joblib
 
 # Explicit model files created by training (ignore these large binaries)
-enhanced_diet_predictor.pkl
-simple_enhanced_model.pkl
+# *.pkl
+
+# Explicit model files created by training (ignore these large binaries)
+# enhanced_diet_predictor.pkl
+# simple_enhanced_model.pkl
 
 # Logs
 *.log
