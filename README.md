@@ -1,6 +1,6 @@
 <!-- Top Anchor -->
 
-# 🏋️‍♂️ Gymbite ML Nutrition Recommendation System
+# Gymbite ML Nutrition Recommendation System
 
 [![CI](https://github.com/Nouman13388/gymbite_model/actions/workflows/pytest.yml/badge.svg?branch=dev)](https://github.com/Nouman13388/gymbite_model/actions/workflows/pytest.yml)
 
@@ -313,13 +313,13 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-2. Install runtime and development/test dependencies:
+1. Install runtime and development/test dependencies:
 
 ```powershell
 pip install -r requirements.txt -r dev-requirements.txt
 ```
 
-3. Run tests:
+1. Run tests:
 
 ```powershell
 python -m pytest -q
@@ -343,6 +343,4 @@ Specify license here (e.g., MIT, Proprietary). Add a `LICENSE` file before distr
 
 **Professional-grade nutrition intelligence—production ready and extensible.**
 
-[Back to Top](#-gymbite-ml-nutrition-recommendation-system)
-
-<!-- If the above anchor fails on some renderers, replace with: [Back to Top](#-gymbite-ml-nutrition-recommendation-system) -->
+[Back to Top](#gymbite-ml-nutrition-recommendation-system)
