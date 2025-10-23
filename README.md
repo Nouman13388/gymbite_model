@@ -302,6 +302,31 @@ Competitive Advantages:
 - Introduce goal-specific calorie periodization (cut / bulk / maintenance)
 - Build CI tests: synthetic input validation & schema checks
 
+### Developer setup (quick)
+
+If you're contributing or running tests locally, follow these steps (Windows PowerShell):
+
+1. Create and activate a virtual environment in the project root:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+2. Install runtime and development/test dependencies:
+
+```powershell
+pip install -r requirements.txt -r dev-requirements.txt
+```
+
+3. Run tests:
+
+```powershell
+python -m pytest -q
+```
+
+Note: `dev-requirements.txt` pins `pytest` and `httpx` so CI and local runs are consistent.
+
 ## 📄 License
 
 Specify license here (e.g., MIT, Proprietary). Add a `LICENSE` file before distribution.

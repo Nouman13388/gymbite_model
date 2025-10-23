@@ -1,2 +1,5 @@
-pytest
-httpx
+
+# Pinned test/dev dependencies for deterministic CI
+pytest==7.3.2
+httpx==0.24.1
+
