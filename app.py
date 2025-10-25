@@ -37,28 +37,33 @@ def create_app() -> FastAPI:
     predictor = EnhancedDietPredictor()
 
     @app.on_event("startup")
-    def load_model_on_startup() -> None:
-        """Load the trained model once on startup and attach to app.state.
-
-        This marks `app.state.model_loaded` so a /health endpoint can report readiness.
-        We avoid raising here so the service can respond to health checks even if the
-        model failed to load (the `/predict` endpoint will return 503 in that case).
-        """
+    def startup() -> None:
+        """Minimal startup - just mark the app as starting."""
         app.state.start_time = time.time()
         app.state.model_loaded = False
+        app.state.predictor = None
+        logger.info("✅ FastAPI app started")
+
+    def load_model_lazy() -> None:
+        """Load model on first request if not already loaded."""
+        if getattr(app.state, "model_loaded", False):
+            return  # Already loaded
 
         try:
             predictor.load_model()  # assumes default path 'enhanced_diet_predictor.pkl'
             app.state.predictor = predictor
             app.state.model_loaded = True
-            logger.info("✅ Model loaded successfully on startup")
+            logger.info("✅ Model loaded successfully on first request")
         except Exception as e:
-            # Log but don't crash. The health endpoint will report degraded state.
-            logger.error("Failed to load model on startup: %s", e)
+            logger.error("Failed to load model: %s", e)
+            raise
 
     @app.post("/predict")
     async def predict(inp: Input) -> Dict[str, Any]:
         """Accept Input model, run prediction, return JSON result."""
+        # Load model on first request if not loaded
+        load_model_lazy()
+
         pred_service: EnhancedDietPredictor = getattr(app.state, "predictor", None)
         if pred_service is None:
             raise HTTPException(status_code=503, detail="Model not loaded")
