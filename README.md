@@ -288,36 +288,24 @@ ls -lh enhanced_diet_predictor.pkl
 
 Deploy to Google Cloud Run (free tier: 2 million requests/month):
 
-1. **Install Google Cloud SDK:**
+**Current Status:** 🚀 **Live at:** https://gymbite-model-480367101608.europe-west1.run.app
 
-   ```bash
-   # Download from: https://cloud.google.com/sdk/docs/install
-   gcloud init
-   gcloud auth login
-   ```
+#### Deployment Notes
 
-2. **Set your GCP project:**
+The application uses **lazy loading** for the ML model:
+- The app starts immediately without loading the model
+- The model loads on the first prediction request
+- This avoids startup timeout issues in Cloud Run
 
-   ```bash
-   gcloud config set project YOUR_PROJECT_ID
-   ```
+#### Git LFS Model File Handling
 
-3. **Deploy to Cloud Run:**
+The model file (`enhanced_diet_predictor.pkl`, 125.6 MB) is tracked with Git LFS. Cloud Build doesn't automatically pull LFS files, so the app has been configured to:
 
-   ```bash
-   gcloud run deploy gymbite-model \
-     --source . \
-     --platform managed \
-     --region us-central1 \
-     --allow-unauthenticated \
-     --memory 512Mi \
-     --timeout 3600
-   ```
+1. Check if the model file exists locally on startup
+2. If missing, download it automatically on the first prediction request
+3. Cache it for subsequent requests
 
-4. **Get your deployment URL:**
-   ```bash
-   gcloud run services describe gymbite-model --region us-central1
-   ```
+This ensures the API works seamlessly both locally and in the cloud.
 
 ### Other Cloud Platforms
 
