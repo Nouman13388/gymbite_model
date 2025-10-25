@@ -293,6 +293,7 @@ Deploy to Google Cloud Run (free tier: 2 million requests/month):
 #### Deployment Notes
 
 The application uses **lazy loading** for the ML model:
+
 - The app starts immediately without loading the model
 - The model loads on the first prediction request
 - This avoids startup timeout issues in Cloud Run
