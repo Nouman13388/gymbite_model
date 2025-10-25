@@ -60,6 +60,7 @@ Both endpoints have been tested and verified to work correctly:
 ### Prediction Endpoint Test Results
 
 **Request:**
+
 ```json
 {
   "Age": 28,
@@ -82,6 +83,7 @@ Both endpoints have been tested and verified to work correctly:
 ```
 
 **Response:**
+
 ```json
 {
   "recommended_calories": 1889,

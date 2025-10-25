@@ -33,6 +33,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 **Response Code:** 200 OK
 
 **Response Body:**
+
 ```json
 {
   "status": "ok",
@@ -42,6 +43,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 ```
 
 **Verification:**
+
 - ✅ Endpoint accessible
 - ✅ Returns correct status ("ok")
 - ✅ Model loaded indicator is true
@@ -61,6 +63,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 **Processing Time:** < 100ms
 
 #### Request Payload
+
 ```json
 {
   "Age": 28,
@@ -83,6 +86,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 ```
 
 #### Response Payload
+
 ```json
 {
   "recommended_calories": 1889,
@@ -97,6 +101,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 ```
 
 **Verification:**
+
 - ✅ Endpoint accepts valid input
 - ✅ All 19 input features processed correctly
 - ✅ Predictions returned in expected format
@@ -110,41 +115,43 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 
 ## Model Information
 
-| Property | Value |
-|----------|-------|
-| Model Type | Scikit-learn MultiOutputRegressor |
-| Base Algorithm | Random Forest Regressor |
-| Input Features | 19 engineered nutritional features |
-| Output Targets | 4 nutritional recommendations |
-| Model File | enhanced_diet_predictor.pkl |
-| Model Size | 125.6 MB |
-| Storage | Git LFS (GitHub & Hugging Face Spaces) |
-| Loading Time | ~1 second |
+| Property       | Value                                  |
+| -------------- | -------------------------------------- |
+| Model Type     | Scikit-learn MultiOutputRegressor      |
+| Base Algorithm | Random Forest Regressor                |
+| Input Features | 19 engineered nutritional features     |
+| Output Targets | 4 nutritional recommendations          |
+| Model File     | enhanced_diet_predictor.pkl            |
+| Model Size     | 125.6 MB                               |
+| Storage        | Git LFS (GitHub & Hugging Face Spaces) |
+| Loading Time   | ~1 second                              |
 
 ---
 
 ## Performance Metrics
 
-| Metric | Result |
-|--------|--------|
-| Health Check Response Time | < 10ms |
-| Prediction Response Time | < 100ms |
-| Model Load Time | ~1s |
-| Memory Usage | Acceptable |
-| CPU Usage | Minimal |
-| Prediction Accuracy | Verified with test case |
+| Metric                     | Result                  |
+| -------------------------- | ----------------------- |
+| Health Check Response Time | < 10ms                  |
+| Prediction Response Time   | < 100ms                 |
+| Model Load Time            | ~1s                     |
+| Memory Usage               | Acceptable              |
+| CPU Usage                  | Minimal                 |
+| Prediction Accuracy        | Verified with test case |
 
 ---
 
 ## Data Validation
 
 ### Input Validation
+
 - ✅ All required fields accepted
 - ✅ Data types validated correctly
 - ✅ Numeric ranges handled properly
 - ✅ String values (Gender) processed correctly
 
 ### Output Validation
+
 - ✅ All outputs are numeric
 - ✅ Values are within expected ranges
 - ✅ No null or error values
@@ -155,12 +162,14 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 ## Deployment Status
 
 ### GitHub Repository
+
 - **Repository:** Nouman13388/gymbite_model
 - **Branch:** dev
 - **Latest Commit:** 8a45b93
 - **Status:** ✅ All tests passing
 
 ### Hugging Face Spaces
+
 - **Space:** Nouman1338/gymbite-model
 - **Branch:** main
 - **Configuration:** ✅ Fixed with proper YAML metadata
@@ -172,6 +181,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 ## Files Modified/Created
 
 ### Modified Files
+
 1. **README.md**
    - Added YAML metadata for HF Spaces
    - Added test results section
@@ -179,6 +189,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
    - Added live endpoint testing information
 
 ### New Files
+
 1. **test_api_endpoints.py**
    - Standalone test script
    - Can be run locally
@@ -190,6 +201,7 @@ The Gymbite nutrition recommendation API has been comprehensively tested and ver
 ## How to Run Tests Locally
 
 ### Prerequisites
+
 ```bash
 # Activate virtual environment
 .\.venv\Scripts\Activate.ps1
@@ -200,11 +212,13 @@ pip install httpx  # For testing
 ```
 
 ### Run Tests
+
 ```bash
 python test_api_endpoints.py
 ```
 
 ### Expected Output
+
 ```
 🧪 GYMBITE API ENDPOINT TESTING
 ========================================
@@ -228,17 +242,20 @@ Prediction Endpoint: ✅ PASSED
 ### For Production Deployment
 
 1. ✅ **API is ready for production**
+
    - Both endpoints tested and verified
    - Model loading works correctly
    - Response times are acceptable
 
 2. **Monitor in Production**
+
    - Track response times
    - Monitor error rates
    - Log unusual requests
    - Alert on health endpoint failures
 
 3. **Future Enhancements**
+
    - Consider adding rate limiting
    - Add request logging
    - Implement caching for frequent requests
