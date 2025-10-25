@@ -24,10 +24,14 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/health",
+                            "protocol": "https",
                             "host": [
-                                "{{base_url}}"
+                                "huggingface.co"
                             ],
                             "path": [
+                                "spaces",
+                                "Nouman1338",
+                                "gymbite-model",
                                 "health"
                             ]
                         },
@@ -99,10 +103,14 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
+                            "protocol": "https",
                             "host": [
-                                "{{base_url}}"
+                                "huggingface.co"
                             ],
                             "path": [
+                                "spaces",
+                                "Nouman1338",
+                                "gymbite-model",
                                 "predict"
                             ]
                         },
@@ -172,10 +180,14 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
+                            "protocol": "https",
                             "host": [
-                                "{{base_url}}"
+                                "huggingface.co"
                             ],
                             "path": [
+                                "spaces",
+                                "Nouman1338",
+                                "gymbite-model",
                                 "predict"
                             ]
                         },
@@ -200,10 +212,14 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
+                            "protocol": "https",
                             "host": [
-                                "{{base_url}}"
+                                "huggingface.co"
                             ],
                             "path": [
+                                "spaces",
+                                "Nouman1338",
+                                "gymbite-model",
                                 "predict"
                             ]
                         },
