@@ -1,53 +1,67 @@
-﻿---
-title: Gymbite Nutrition Model
-emoji: 🥗
-colorFrom: yellow
-colorTo: green
-sdk: docker
-app_file: app.py
-pinned: false
----
+﻿# Gymbite - ML Nutrition Recommendation System
 
-# Gymbite - ML Nutrition Recommendation System
+Gymbite is a FastAPI-based nutrition recommendation system powered by a trained scikit-learn model. It provides personalized nutrition recommendations based on user health metrics.
 
-Gymbite exposes a small FastAPI service that loads a trained scikit-learn model and serves personalized nutrition recommendations via POST `/predict`.
+**Key Features:**
 
-## 🚀 Live Deployment
+- 🎯 ML-powered nutrition recommendations
+- ⚡ Fast REST API with FastAPI
+- 🔄 Easy local development
+- 🚀 Cloud-ready (GCP, AWS, Azure, etc.)
+- 📊 Uses scikit-learn Random Forest model (16 inputs → 8 outputs)
 
-**Your app is now deployed on Hugging Face Spaces!**
+## 🏗️ Architecture
 
-- **Live URL:** https://huggingface.co/spaces/Nouman1338/gymbite-model
-- **Status:** ✅ Active and running
-- **Model:** Enhanced Diet Predictor (125.6 MB, Git LFS)
-- **Infrastructure:** Python 3.10 + FastAPI + Uvicorn
-
-### Quick Links
-
-- [View Space](https://huggingface.co/spaces/Nouman1338/gymbite-model)
-- [Space Settings](https://huggingface.co/spaces/Nouman1338/gymbite-model/settings)
-- [Build Logs](https://huggingface.co/spaces/Nouman1338/gymbite-model/logs)
-- [GitHub Repository](https://github.com/Nouman13388/gymbite_model)
-
-### Test the Live API
-
-```bash
-# Health check
-curl https://huggingface.co/spaces/Nouman1338/gymbite-model/health
-
-# Get recommendation
-curl -X POST https://huggingface.co/spaces/Nouman1338/gymbite-model/predict \
-  -H "Content-Type: application/json" \
-  -d '{"Age": 28, "Gender": "Female", "Height_cm": 165.0, "Weight_kg": 75.0, "BMI": 27.5, "Exercise_Frequency": 5, "Daily_Steps": 10000, "Blood_Pressure_Systolic": 125, "Blood_Pressure_Diastolic": 80, "Cholesterol_Level": 180, "Blood_Sugar_Level": 95, "Sleep_Hours": 7.5, "Caloric_Intake": 2200, "Protein_Intake": 80, "Carbohydrate_Intake": 250, "Fat_Intake": 70}'
+```text
+User Request → FastAPI Endpoint → scikit-learn Model → JSON Response
 ```
 
+- **Input:** 16 health/lifestyle parameters
+- **Output:** 8 nutrition recommendations
+- **Model:** Enhanced Diet Predictor (scikit-learn MultiOutputRegressor)
+- **Response Time:** < 50ms
+
+## ⚡ Quick Start - Local Development
+
+### Prerequisites
+
+```bash
+Python 3.10+
+pip
+git
+```
+
+### Installation
+
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/Nouman13388/gymbite_model.git
+   cd gymbite_model
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the API locally:**
+
+   ```bash
+   # Option A: Using Python directly
+   python app.py
+
+   # Option B: Using uvicorn
+   uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+   ```
+
+4. **API is now running at:** `http://localhost:8000`
+   - Health check: `http://localhost:8000/health`
+   - Predictions: `http://localhost:8000/predict`
+   - Docs: `http://localhost:8000/docs` (auto-generated Swagger UI)
+
 ## ✅ Endpoint Testing Results
-
-Both endpoints have been tested and verified to work correctly:
-
-### Health Endpoint Test Results
-
-```json
-{
   "status": "ok",
   "model_loaded": true,
   "uptime_seconds": 2.34
@@ -237,62 +251,91 @@ Example healthy response:
 
 If the model failed to load at startup, `status` will be `degraded` and `model_loaded` will be `false`. Use this endpoint for readiness probes.
 
-## Docker and Git LFS notes
+## 🐳 Docker & Local Deployment
 
-- The included `Dockerfile` uses `python:3.10-slim` and runs `uvicorn app:app` on port 7860.
-- `.dockerignore` may exclude `*.pkl` by default. For local testing, mount the repo into the container so the model file is available at runtime:
+### Build and Run with Docker
 
-```powershell
+```bash
+# Build the Docker image
 docker build -t gymbite_model:local .
-docker run --rm -p 7860:7860 -v "$PWD:/app" --name gymbite_local gymbite_model:local
+
+# Run the container
+docker run --rm -p 8000:8000 -v "$PWD:/app" --name gymbite_local gymbite_model:local
 ```
 
-- If the model is tracked with Git LFS, run:
+The API will be available at `http://localhost:8000`
 
-```powershell
+### Git LFS (Large File Storage)
+
+The model file is tracked with Git LFS. To pull it locally:
+
+```bash
+# Install Git LFS if not already installed
 git lfs install
+
+# Pull LFS files
 git lfs pull
+
+# Verify the model file exists
+ls -lh enhanced_diet_predictor.pkl
 ```
 
-To add a model file to LFS:
+## ☁️ Cloud Deployment
 
-```powershell
-git lfs track "*.pkl"
-git add .gitattributes
-git add <your_model>.pkl
-git commit -m "chore: add model to LFS"
-git push origin dev
+### Google Cloud Platform (GCP) - Recommended for Free Tier
+
+Deploy to Google Cloud Run (free tier: 2 million requests/month):
+
+1. **Install Google Cloud SDK:**
+   ```bash
+   # Download from: https://cloud.google.com/sdk/docs/install
+   gcloud init
+   gcloud auth login
+   ```
+
+2. **Set your GCP project:**
+   ```bash
+   gcloud config set project YOUR_PROJECT_ID
+   ```
+
+3. **Deploy to Cloud Run:**
+   ```bash
+   gcloud run deploy gymbite-model \
+     --source . \
+     --platform managed \
+     --region us-central1 \
+     --allow-unauthenticated \
+     --memory 512Mi \
+     --timeout 3600
+   ```
+
+4. **Get your deployment URL:**
+   ```bash
+   gcloud run services describe gymbite-model --region us-central1
+   ```
+
+### Other Cloud Platforms
+
+- **Azure Container Instances** - Pay-per-use Docker containers
+- **AWS Lambda** with API Gateway - Serverless option
+- **DigitalOcean App Platform** - Simple Docker deployment with free tier
+- **Render.com** - Free tier available
+
+### Environment Variables (for Cloud Deployment)
+
+Create a `.env.example` file for reference:
+
+```bash
+PORT=8000
+HOST=0.0.0.0
+LOG_LEVEL=info
 ```
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
-- If `/predict` returns 503, the model is not loaded (see `/health`). Ensure you ran `git lfs pull` if using LFS or mounted the model into the container.
-- If your editor complains about unresolved imports (fastapi/pydantic/uvicorn), install `requirements.txt` into the environment used by the editor.
-
-## Deployment Guide
-
-### Hugging Face Spaces (Recommended - Already Deployed!)
-
-Your app is already deployed to Hugging Face Spaces. To redeploy or deploy to a new Space:
-
-1. Create a new Space at https://huggingface.co/spaces/new
-2. Choose Docker as the SDK
-3. Clone or link your GitHub repository
-4. Hugging Face will automatically build and deploy your Dockerfile
-
-**Advantages:**
-
-- Free tier with GPU support
-- Automatic Docker builds on push
-- Git LFS support included
-- Easy sharing and collaboration
-
-### Local Docker Deployment
-
-```powershell
-docker build -t gymbite_model:local .
-docker run --rm -p 7860:7860 -v "$PWD:/app" --name gymbite_local gymbite_model:local
-```
+- **Model not found:** Run `git lfs pull` to download the model file from Git LFS
+- **Import errors:** Install dependencies with `pip install -r requirements.txt`
+- **Port already in use:** Change port with `--port 9000` in uvicorn command
 
 ### Alternative Platforms
 

@@ -43,41 +43,58 @@ This guide helps developers import and use the Gymbite Nutrition API collection 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/Nouman1338/gymbite_model.git
+   git clone https://github.com/Nouman13388/gymbite_model.git
    cd gymbite_model
    ```
 
-2. **Install dependencies:**
+2. **Pull the model file from Git LFS:**
+
+   ```bash
+   git lfs install
+   git lfs pull
+   ```
+
+3. **Install dependencies:**
 
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Start the API locally:**
+4. **Start the API locally:**
 
    ```bash
    # Option A: Using Python directly
    python app.py
-   
+
    # Option B: Using uvicorn
-   uvicorn app:app --port 8000 --reload
+   uvicorn app:app --host 127.0.0.1 --port 8000 --reload
    ```
 
-4. **API is now running at:** `http://localhost:8000`
+5. **API is now running at:** `http://localhost:8000`
    - Health check: `http://localhost:8000/health`
    - Predictions: `http://localhost:8000/predict`
+   - Documentation: `http://localhost:8000/docs`
 
-5. **Use Postman Collection:** With the default `base_url = http://localhost:8000`, all requests will work immediately!
+6. **Use Postman Collection:** With the default `base_url = http://localhost:8000`, all requests will work immediately!
 
-#### For CLOUD DEPLOYMENT
+#### For CLOUD DEPLOYMENT (GCP, AWS, Azure)
 
-If you deploy to a cloud platform (e.g., AWS, Azure, HF Inference Endpoint):
+If you deploy to a cloud platform:
 
-1. **Select Collection** → "Gymbite Nutrition API"
-2. **Go to "Variables"** tab
-3. **Update `base_url`** to your deployed endpoint:
+1. **Get your deployed API URL** from your cloud provider
+2. **Select Collection** → "Gymbite Nutrition API"
+3. **Go to "Variables"** tab
+4. **Update `base_url`** to your deployed endpoint:
 
    ```text
+   https://your-cloud-endpoint.com
+   ```
+
+5. **Example for GCP Cloud Run:**
+
+   ```text
+   https://gymbite-model-xxxxx-us-central1.a.run.app
+   ```
    https://your-api-endpoint.com
    ```
 
