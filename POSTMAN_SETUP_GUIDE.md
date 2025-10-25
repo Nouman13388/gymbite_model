@@ -34,20 +34,58 @@ This guide helps developers import and use the Gymbite Nutrition API collection 
 
 ## 🔧 Configuration
 
-### Base URL (Pre-configured for Production)
+### ⚠️ IMPORTANT - Endpoint Configuration
 
-The collection is **pre-configured with the production URL** on Hugging Face Spaces. No setup needed!
+**The collection is pre-configured for LOCAL DEVELOPMENT** on `http://localhost:8000`.
 
-**Default URL:** `https://huggingface.co/spaces/Nouman1338/gymbite-model`
+#### Getting Started - LOCAL TESTING (Recommended for Development)
 
-If you need to change it for local development:
+1. **Clone the repository:**
+
+   ```bash
+   git clone https://github.com/Nouman1338/gymbite_model.git
+   cd gymbite_model
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Start the API locally:**
+
+   ```bash
+   # Option A: Using Python directly
+   python app.py
+   
+   # Option B: Using uvicorn
+   uvicorn app:app --port 8000 --reload
+   ```
+
+4. **API is now running at:** `http://localhost:8000`
+   - Health check: `http://localhost:8000/health`
+   - Predictions: `http://localhost:8000/predict`
+
+5. **Use Postman Collection:** With the default `base_url = http://localhost:8000`, all requests will work immediately!
+
+#### For CLOUD DEPLOYMENT
+
+If you deploy to a cloud platform (e.g., AWS, Azure, HF Inference Endpoint):
 
 1. **Select Collection** → "Gymbite Nutrition API"
 2. **Go to "Variables"** tab
-3. **Modify `base_url`** value:
-   - **Production (Default):** `https://huggingface.co/spaces/Nouman1338/gymbite-model`
-   - **Local Development:** `http://localhost:8000`
-   - **Custom Server:** `https://your-server-url.com`
+3. **Update `base_url`** to your deployed endpoint:
+
+   ```text
+   https://your-api-endpoint.com
+   ```
+
+**Important Notes:**
+
+- ❌ **HF Spaces Direct Access:** The app is deployed on HF Spaces but endpoints are not publicly exposed
+- ✅ **Local Testing:** Run locally for full API access via Postman
+- ✅ **Cloud Options:** Deploy to HF Inference Endpoints, AWS, Azure, or other platforms for external API access
 
 ### Environment Setup (Optional)
 
@@ -91,6 +129,7 @@ Create environments if you need to switch between URLs frequently:
 ```
 
 **Use Cases:**
+
 - Health monitoring
 - CI/CD pipeline verification
 - Load balancer health checks

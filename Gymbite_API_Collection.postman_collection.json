@@ -24,14 +24,12 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/health",
-                            "protocol": "https",
+                            "protocol": "http",
                             "host": [
-                                "huggingface.co"
+                                "localhost"
                             ],
+                            "port": "8000",
                             "path": [
-                                "spaces",
-                                "Nouman1338",
-                                "gymbite-model",
                                 "health"
                             ]
                         },
@@ -103,14 +101,12 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
-                            "protocol": "https",
+                            "protocol": "http",
                             "host": [
-                                "huggingface.co"
+                                "localhost"
                             ],
+                            "port": "8000",
                             "path": [
-                                "spaces",
-                                "Nouman1338",
-                                "gymbite-model",
                                 "predict"
                             ]
                         },
@@ -180,14 +176,12 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
-                            "protocol": "https",
+                            "protocol": "http",
                             "host": [
-                                "huggingface.co"
+                                "localhost"
                             ],
+                            "port": "8000",
                             "path": [
-                                "spaces",
-                                "Nouman1338",
-                                "gymbite-model",
                                 "predict"
                             ]
                         },
@@ -212,14 +206,12 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
-                            "protocol": "https",
+                            "protocol": "http",
                             "host": [
-                                "huggingface.co"
+                                "localhost"
                             ],
+                            "port": "8000",
                             "path": [
-                                "spaces",
-                                "Nouman1338",
-                                "gymbite-model",
                                 "predict"
                             ]
                         },
@@ -233,9 +225,14 @@
     "variable": [
         {
             "key": "base_url",
-            "value": "https://huggingface.co/spaces/Nouman1338/gymbite-model",
+            "value": "http://localhost:8000",
             "type": "string",
-            "description": "Production API URL - Gymbite Nutrition API on Hugging Face Spaces"
+            "description": "API Base URL. For local development use: http://localhost:8000. For production deployment, update this to your API endpoint."
+        },
+        {
+            "key": "deployment_notes",
+            "value": "LOCAL TESTING: Run 'python app.py' or 'uvicorn app:app --port 8000' locally. CLOUD DEPLOYMENT: Update base_url variable to your deployed endpoint (e.g., HF Inference Endpoint or other API service).",
+            "type": "string"
         }
     ]
 }
