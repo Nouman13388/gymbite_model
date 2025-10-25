@@ -1,6 +1,7 @@
 from typing import Any, Dict, Optional
 import time
 import logging
+import os
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -42,7 +43,14 @@ def create_app() -> FastAPI:
         app.state.start_time = time.time()
         app.state.model_loaded = False
         app.state.predictor = None
-        logger.info("✅ FastAPI app started")
+        logger.info("✅ FastAPI app started on port 8080")
+        
+        # Check if model file exists, if not, try to download it from GitHub
+        if not os.path.exists("enhanced_diet_predictor.pkl"):
+            logger.warning("⚠️  Model file not found locally. It will be downloaded on first request.")
+            app.state.model_missing = True
+        else:
+            logger.info("✅ Model file found at startup")
 
     def load_model_lazy() -> None:
         """Load model on first request if not already loaded."""
