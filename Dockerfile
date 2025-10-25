@@ -11,8 +11,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of your project files into the container
 COPY . .
 
-# Expose the default Hugging Face port
-EXPOSE 7860
+# Cloud Run requires the container to listen on the PORT environment variable (default: 8080)
+ENV PORT=8080
+
+# Expose the port
+EXPOSE $PORT
 
 # Command to run your FastAPI app
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
+# Uses PORT environment variable from Cloud Run (defaults to 8080)
+CMD exec uvicorn app:app --host 0.0.0.0 --port ${PORT:-8080}
