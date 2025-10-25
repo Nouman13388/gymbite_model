@@ -34,35 +34,39 @@ This guide helps developers import and use the Gymbite Nutrition API collection 
 
 ## 🔧 Configuration
 
-### Set Base URL
+### Base URL (Pre-configured for Production)
 
-After importing, configure the base URL variable:
+The collection is **pre-configured with the production URL** on Hugging Face Spaces. No setup needed!
+
+**Default URL:** `https://huggingface.co/spaces/Nouman1338/gymbite-model`
+
+If you need to change it for local development:
 
 1. **Select Collection** → "Gymbite Nutrition API"
 2. **Go to "Variables"** tab
-3. **Set `base_url`** value:
+3. **Modify `base_url`** value:
+   - **Production (Default):** `https://huggingface.co/spaces/Nouman1338/gymbite-model`
    - **Local Development:** `http://localhost:8000`
-   - **Hugging Face Spaces:** `https://huggingface.co/spaces/Nouman1338/gymbite-model`
    - **Custom Server:** `https://your-server-url.com`
 
-### Environment Setup (Optional but Recommended)
+### Environment Setup (Optional)
 
-Create an environment for different deployment stages:
+Create environments if you need to switch between URLs frequently:
 
 1. **Click "Environments"** (left sidebar)
-2. **Create Environment** → Name: "Gymbite - Local"
+2. **Create Environment** → Name: "Gymbite - Production"
 3. **Add Variables:**
-   ```
-   base_url: http://localhost:8000
-   ```
 
-4. **Create another environment** → Name: "Gymbite - Production"
-5. **Add Variables:**
    ```
    base_url: https://huggingface.co/spaces/Nouman1338/gymbite-model
    ```
 
-6. **Switch environments** from dropdown (top-right, next to eye icon)
+4. **Create another environment** → Name: "Gymbite - Local Dev" (if needed)
+5. **Add Variables:**
+
+   ```
+   base_url: http://localhost:8000
+   ```
 
 ## 📚 API Endpoints
 
@@ -70,16 +74,19 @@ Create an environment for different deployment stages:
 
 **Endpoint:** `{{base_url}}/health`
 
+**Full URL (Production):** `https://huggingface.co/spaces/Nouman1338/gymbite-model/health`
+
 **Purpose:** Verify API is running and model is loaded
 
 **Method:** GET
 
 **Response (200 OK):**
+
 ```json
 {
   "status": "ok",
   "model_loaded": true,
-  "uptime_seconds": 2.34
+  "uptime_seconds": 16.8
 }
 ```
 
@@ -94,38 +101,42 @@ Create an environment for different deployment stages:
 
 **Endpoint:** `{{base_url}}/predict`
 
+**Full URL (Production):** `https://huggingface.co/spaces/Nouman1338/gymbite-model/predict`
+
 **Purpose:** Get personalized nutrition recommendations based on user health data
 
 **Method:** POST
 
 **Headers:**
+
 ```
 Content-Type: application/json
 Accept: application/json
 ```
 
-**Request Body (19 Parameters):**
+**Request Body (16 Parameters):**
 
-| Parameter | Type | Description | Example |
-|-----------|------|-------------|---------|
-| Age | integer | User age in years | 28 |
-| Gender | string | "Male", "Female", or "Other" | "Female" |
-| Height_cm | float | Height in centimeters | 165.0 |
-| Weight_kg | float | Weight in kilograms | 75.0 |
-| BMI | float | Body Mass Index | 27.5 |
-| Exercise_Frequency | integer | Days per week of exercise (0-7) | 5 |
-| Daily_Steps | integer | Average daily steps | 10000 |
-| Blood_Pressure_Systolic | integer | Systolic pressure (mmHg) | 125 |
-| Blood_Pressure_Diastolic | integer | Diastolic pressure (mmHg) | 80 |
-| Cholesterol_Level | integer | Total cholesterol (mg/dL) | 180 |
-| Blood_Sugar_Level | integer | Fasting blood sugar (mg/dL) | 95 |
-| Sleep_Hours | float | Average sleep per night | 7.5 |
-| Caloric_Intake | integer | Daily caloric intake | 2200 |
-| Protein_Intake | integer | Daily protein (grams) | 80 |
-| Carbohydrate_Intake | integer | Daily carbs (grams) | 250 |
-| Fat_Intake | integer | Daily fat (grams) | 70 |
+| Parameter                | Type    | Description                     | Example  |
+| ------------------------ | ------- | ------------------------------- | -------- |
+| Age                      | integer | User age in years               | 28       |
+| Gender                   | string  | "Male", "Female", or "Other"    | "Female" |
+| Height_cm                | float   | Height in centimeters           | 165.0    |
+| Weight_kg                | float   | Weight in kilograms             | 75.0     |
+| BMI                      | float   | Body Mass Index                 | 27.5     |
+| Exercise_Frequency       | integer | Days per week of exercise (0-7) | 5        |
+| Daily_Steps              | integer | Average daily steps             | 10000    |
+| Blood_Pressure_Systolic  | integer | Systolic pressure (mmHg)        | 125      |
+| Blood_Pressure_Diastolic | integer | Diastolic pressure (mmHg)       | 80       |
+| Cholesterol_Level        | integer | Total cholesterol (mg/dL)       | 180      |
+| Blood_Sugar_Level        | integer | Fasting blood sugar (mg/dL)     | 95       |
+| Sleep_Hours              | float   | Average sleep per night         | 7.5      |
+| Caloric_Intake           | integer | Daily caloric intake            | 2200     |
+| Protein_Intake           | integer | Daily protein (grams)           | 80       |
+| Carbohydrate_Intake      | integer | Daily carbs (grams)             | 250      |
+| Fat_Intake               | integer | Daily fat (grams)               | 70       |
 
 **Example Request:**
+
 ```json
 {
   "Age": 28,
@@ -149,18 +160,19 @@ Accept: application/json
 
 **Response (200 OK):**
 
-| Field | Type | Description |
-|-------|------|-------------|
-| recommended_calories | float | Daily calorie target |
-| recommended_protein | float | Daily protein target (grams) |
-| recommended_carbs | float | Daily carbs target (grams) |
-| recommended_fats | float | Daily fat target (grams) |
-| bmr | integer | Basal Metabolic Rate |
-| tdee | integer | Total Daily Energy Expenditure |
-| health_risk_score | integer | Health risk score (0-100) |
-| activity_level_score | float | Activity level score |
+| Field                | Type    | Description                    |
+| -------------------- | ------- | ------------------------------ |
+| recommended_calories | float   | Daily calorie target           |
+| recommended_protein  | float   | Daily protein target (grams)   |
+| recommended_carbs    | float   | Daily carbs target (grams)     |
+| recommended_fats     | float   | Daily fat target (grams)       |
+| bmr                  | integer | Basal Metabolic Rate           |
+| tdee                 | integer | Total Daily Energy Expenditure |
+| health_risk_score    | integer | Health risk score (0-100)      |
+| activity_level_score | float   | Activity level score           |
 
 **Example Response:**
+
 ```json
 {
   "recommended_calories": 1889,
@@ -191,18 +203,24 @@ Use these to quickly test the API with realistic data!
 ## 🧪 Testing Tips
 
 ### 1. Test Health Endpoint First
+
 Always verify the API is up before testing predictions:
+
 - Send GET /health request
 - Confirm `model_loaded: true`
 
 ### 2. Use Environment Variables
+
 Replace hardcoded URLs with `{{base_url}}` for easy switching between environments
 
 ### 3. Save Responses
+
 Postman automatically saves responses - useful for comparing different user profiles
 
 ### 4. Create Request Collections by Use Case
+
 Organize requests by feature:
+
 - Nutrition prediction requests
 - Health monitoring requests
 - Integration test requests
@@ -210,21 +228,23 @@ Organize requests by feature:
 ### 5. Use Scripts for Automation
 
 Add pre-request script to validate data:
+
 ```javascript
 // Validate Age is reasonable
 const age = pm.request.body.raw.Age;
 if (age < 1 || age > 150) {
-    throw new Error("Invalid age");
+  throw new Error("Invalid age");
 }
 ```
 
 Add test script to validate responses:
+
 ```javascript
-pm.test("Response has all required fields", function() {
-    const response = pm.response.json();
-    pm.expect(response).to.have.property('recommended_calories');
-    pm.expect(response).to.have.property('bmr');
-    pm.expect(response).to.have.property('health_risk_score');
+pm.test("Response has all required fields", function () {
+  const response = pm.response.json();
+  pm.expect(response).to.have.property("recommended_calories");
+  pm.expect(response).to.have.property("bmr");
+  pm.expect(response).to.have.property("health_risk_score");
 });
 ```
 
@@ -240,6 +260,7 @@ When authentication is implemented:
 4. **Token:** `{{auth_token}}`
 
 Add to environment variables:
+
 ```
 auth_token: your-token-here
 ```
@@ -249,11 +270,13 @@ auth_token: your-token-here
 ## 🚀 Deployment Endpoints
 
 ### Local Development
+
 ```
 http://localhost:8000
 ```
 
 ### Hugging Face Spaces (Production)
+
 ```
 https://huggingface.co/spaces/Nouman1338/gymbite-model
 ```
@@ -274,13 +297,38 @@ https://huggingface.co/spaces/Nouman1338/gymbite-model
 
 ## 🐛 Troubleshooting
 
-| Issue | Solution |
-|-------|----------|
-| 404 Not Found | Check base_url variable is correct |
-| 500 Internal Error | Verify all 16 required fields in request |
-| Model not loaded | Restart API server; check model file exists |
-| Slow responses | Check server resources; model loads on first request |
-| Connection refused | Ensure API server is running |
+| Issue              | Solution                                                                      |
+| ------------------ | ----------------------------------------------------------------------------- |
+| 404 Not Found      | Check base_url variable is correct; ensure trailing slash is NOT included     |
+| 500 Internal Error | Verify all 16 required fields in request                                      |
+| Model not loaded   | Restart API server; check model file exists                                   |
+| Slow responses     | Check server resources; model loads on first request                          |
+| Connection refused | Ensure API server is running                                                  |
+| HF Spaces 404      | Use full URL: `https://huggingface.co/spaces/Nouman1338/gymbite-model/health` |
+| HF Spaces timeout  | HF Spaces can be slow; increase timeout in Postman settings                   |
+
+### HF Spaces Specific Tips
+
+If you're testing against Hugging Face Spaces and getting 404 errors:
+
+1. **Verify the URL format:**
+
+   - ❌ Wrong: `https://huggingface.co/spaces/Nouman1338/gymbite-model/` (trailing slash)
+   - ✅ Correct: `https://huggingface.co/spaces/Nouman1338/gymbite-model`
+
+2. **Test health endpoint first:**
+
+   - Go to: `https://huggingface.co/spaces/Nouman1338/gymbite-model/health`
+   - Should return: `{"status": "ok", "model_loaded": true}`
+
+3. **Increase timeout for HF Spaces:**
+
+   - Go to Postman Settings → General → Request Timeout (ms)
+   - Set to at least 60000 (60 seconds)
+
+4. **If Space is sleeping:**
+   - Visit the Space URL directly to wake it up
+   - Then retry your requests
 
 ---
 
@@ -312,6 +360,7 @@ https://huggingface.co/spaces/Nouman1338/gymbite-model
 ## 📈 Integration Examples
 
 ### cURL
+
 ```bash
 curl -X POST http://localhost:8000/predict \
   -H "Content-Type: application/json" \
@@ -319,6 +368,7 @@ curl -X POST http://localhost:8000/predict \
 ```
 
 ### Python (requests)
+
 ```python
 import requests
 
@@ -334,19 +384,20 @@ print(response.json())
 ```
 
 ### JavaScript (fetch)
+
 ```javascript
-fetch('http://localhost:8000/predict', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
+fetch("http://localhost:8000/predict", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     Age: 28,
-    Gender: 'Female',
+    Gender: "Female",
     Height_cm: 165.0,
     // ... other fields
-  })
+  }),
 })
-.then(r => r.json())
-.then(data => console.log(data))
+  .then((r) => r.json())
+  .then((data) => console.log(data));
 ```
 
 ---

@@ -1,227 +1,225 @@
 {
-  "info": {
-    "_postman_id": "gymbite-nutrition-api-v1",
-    "name": "Gymbite Nutrition API",
-    "description": "Complete REST API collection for Gymbite ML Nutrition Recommendation System. Test endpoints, manage nutrition predictions, and health checks.",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "version": "1.0.0"
-  },
-  "item": [
-    {
-      "name": "Health & Status",
-      "description": "Server health and status endpoints",
-      "item": [
-        {
-          "name": "Health Check",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/health",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "health"
-              ]
-            },
-            "description": "Check if the API server is running and the ML model is loaded"
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [
-                  {
-                    "key": "Accept",
-                    "value": "application/json",
-                    "type": "text"
-                  }
-                ],
-                "url": {
-                  "raw": "http://localhost:8000/health",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8000",
-                  "path": [
-                    "health"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
-                {
-                  "key": "content-type",
-                  "value": "application/json"
-                }
-              ],
-              "body": "{\n  \"status\": \"ok\",\n  \"model_loaded\": true,\n  \"uptime_seconds\": 2.34\n}"
-            }
-          ]
-        }
-      ]
+    "info": {
+        "_postman_id": "gymbite-nutrition-api-v1",
+        "name": "Gymbite Nutrition API",
+        "description": "Complete REST API collection for Gymbite ML Nutrition Recommendation System. Test endpoints, manage nutrition predictions, and health checks.",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "version": "1.0.0"
     },
-    {
-      "name": "Nutrition Predictions",
-      "description": "Get personalized nutrition recommendations based on user health data",
-      "item": [
+    "item": [
         {
-          "name": "Get Nutrition Recommendation",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              },
-              {
-                "key": "Accept",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"Age\": 28,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 165.0,\n  \"Weight_kg\": 75.0,\n  \"BMI\": 27.5,\n  \"Exercise_Frequency\": 5,\n  \"Daily_Steps\": 10000,\n  \"Blood_Pressure_Systolic\": 125,\n  \"Blood_Pressure_Diastolic\": 80,\n  \"Cholesterol_Level\": 180,\n  \"Blood_Sugar_Level\": 95,\n  \"Sleep_Hours\": 7.5,\n  \"Caloric_Intake\": 2200,\n  \"Protein_Intake\": 80,\n  \"Carbohydrate_Intake\": 250,\n  \"Fat_Intake\": 70\n}\n"
-            },
-            "url": {
-              "raw": "{{base_url}}/predict",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "predict"
-              ]
-            },
-            "description": "Get personalized nutrition recommendations. Accepts 16 health and lifestyle parameters and returns 8 recommendation outputs including calorie targets, macro recommendations, BMR, TDEE, and health risk scores."
-          },
-          "response": [
-            {
-              "name": "200 OK - Nutrition Recommendations",
-              "originalRequest": {
-                "method": "POST",
-                "header": [
-                  {
-                    "key": "Content-Type",
-                    "value": "application/json",
-                    "type": "text"
-                  },
-                  {
-                    "key": "Accept",
-                    "value": "application/json",
-                    "type": "text"
-                  }
-                ],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n  \"Age\": 28,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 165.0,\n  \"Weight_kg\": 75.0,\n  \"BMI\": 27.5,\n  \"Exercise_Frequency\": 5,\n  \"Daily_Steps\": 10000,\n  \"Blood_Pressure_Systolic\": 125,\n  \"Blood_Pressure_Diastolic\": 80,\n  \"Cholesterol_Level\": 180,\n  \"Blood_Sugar_Level\": 95,\n  \"Sleep_Hours\": 7.5,\n  \"Caloric_Intake\": 2200,\n  \"Protein_Intake\": 80,\n  \"Carbohydrate_Intake\": 250,\n  \"Fat_Intake\": 70\n}\n"
+            "name": "Health & Status",
+            "description": "Server health and status endpoints",
+            "item": [
+                {
+                    "name": "Health Check",
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "url": {
+                            "raw": "{{base_url}}/health",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "health"
+                            ]
+                        },
+                        "description": "Check if the API server is running and the ML model is loaded"
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "url": {
+                                    "raw": "https://huggingface.co/spaces/Nouman1338/gymbite-model/health",
+                                    "protocol": "https",
+                                    "host": [
+                                        "huggingface.co"
+                                    ],
+                                    "path": [
+                                        "spaces",
+                                        "Nouman1338",
+                                        "gymbite-model",
+                                        "health"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"status\": \"ok\",\n  \"model_loaded\": true,\n  \"uptime_seconds\": 2.34\n}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Nutrition Predictions",
+            "description": "Get personalized nutrition recommendations based on user health data",
+            "item": [
+                {
+                    "name": "Get Nutrition Recommendation",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"Age\": 28,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 165.0,\n  \"Weight_kg\": 75.0,\n  \"BMI\": 27.5,\n  \"Exercise_Frequency\": 5,\n  \"Daily_Steps\": 10000,\n  \"Blood_Pressure_Systolic\": 125,\n  \"Blood_Pressure_Diastolic\": 80,\n  \"Cholesterol_Level\": 180,\n  \"Blood_Sugar_Level\": 95,\n  \"Sleep_Hours\": 7.5,\n  \"Caloric_Intake\": 2200,\n  \"Protein_Intake\": 80,\n  \"Carbohydrate_Intake\": 250,\n  \"Fat_Intake\": 70\n}\n"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/predict",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "predict"
+                            ]
+                        },
+                        "description": "Get personalized nutrition recommendations. Accepts 16 health and lifestyle parameters and returns 8 recommendation outputs including calorie targets, macro recommendations, BMR, TDEE, and health risk scores."
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK - Nutrition Recommendations",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json",
+                                        "type": "text"
+                                    }
+                                ],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"Age\": 28,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 165.0,\n  \"Weight_kg\": 75.0,\n  \"BMI\": 27.5,\n  \"Exercise_Frequency\": 5,\n  \"Daily_Steps\": 10000,\n  \"Blood_Pressure_Systolic\": 125,\n  \"Blood_Pressure_Diastolic\": 80,\n  \"Cholesterol_Level\": 180,\n  \"Blood_Sugar_Level\": 95,\n  \"Sleep_Hours\": 7.5,\n  \"Caloric_Intake\": 2200,\n  \"Protein_Intake\": 80,\n  \"Carbohydrate_Intake\": 250,\n  \"Fat_Intake\": 70\n}\n"
+                                },
+                                "url": {
+                                    "raw": "https://huggingface.co/spaces/Nouman1338/gymbite-model/predict",
+                                    "protocol": "https",
+                                    "host": [
+                                        "huggingface.co"
+                                    ],
+                                    "path": [
+                                        "spaces",
+                                        "Nouman1338",
+                                        "gymbite-model",
+                                        "predict"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "content-type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"recommended_calories\": 1889,\n  \"recommended_protein\": 84.0,\n  \"recommended_carbs\": 251.9,\n  \"recommended_fats\": 73.9,\n  \"bmr\": 1480,\n  \"tdee\": 2368,\n  \"health_risk_score\": 25,\n  \"activity_level_score\": 6.9\n}"
+                        }
+                    ]
                 },
-                "url": {
-                  "raw": "http://localhost:8000/predict",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8000",
-                  "path": [
-                    "predict"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "header": [
                 {
-                  "key": "content-type",
-                  "value": "application/json"
+                    "name": "Sample Request - Active Male",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"Age\": 35,\n  \"Gender\": \"Male\",\n  \"Height_cm\": 180.0,\n  \"Weight_kg\": 85.0,\n  \"BMI\": 26.2,\n  \"Exercise_Frequency\": 6,\n  \"Daily_Steps\": 12000,\n  \"Blood_Pressure_Systolic\": 120,\n  \"Blood_Pressure_Diastolic\": 75,\n  \"Cholesterol_Level\": 170,\n  \"Blood_Sugar_Level\": 90,\n  \"Sleep_Hours\": 8.0,\n  \"Caloric_Intake\": 2500,\n  \"Protein_Intake\": 120,\n  \"Carbohydrate_Intake\": 300,\n  \"Fat_Intake\": 80\n}\n"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/predict",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "predict"
+                            ]
+                        },
+                        "description": "Sample request for an active male with good health metrics"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Sample Request - Sedentary Female",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"Age\": 45,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 160.0,\n  \"Weight_kg\": 70.0,\n  \"BMI\": 27.3,\n  \"Exercise_Frequency\": 1,\n  \"Daily_Steps\": 3000,\n  \"Blood_Pressure_Systolic\": 135,\n  \"Blood_Pressure_Diastolic\": 85,\n  \"Cholesterol_Level\": 210,\n  \"Blood_Sugar_Level\": 105,\n  \"Sleep_Hours\": 6.0,\n  \"Caloric_Intake\": 1800,\n  \"Protein_Intake\": 60,\n  \"Carbohydrate_Intake\": 200,\n  \"Fat_Intake\": 60\n}\n"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/predict",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "predict"
+                            ]
+                        },
+                        "description": "Sample request for a sedentary female with elevated health risks"
+                    },
+                    "response": []
                 }
-              ],
-              "body": "{\n  \"recommended_calories\": 1889,\n  \"recommended_protein\": 84.0,\n  \"recommended_carbs\": 251.9,\n  \"recommended_fats\": 73.9,\n  \"bmr\": 1480,\n  \"tdee\": 2368,\n  \"health_risk_score\": 25,\n  \"activity_level_score\": 6.9\n}"
-            }
-          ]
-        },
-        {
-          "name": "Sample Request - Active Male",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"Age\": 35,\n  \"Gender\": \"Male\",\n  \"Height_cm\": 180.0,\n  \"Weight_kg\": 85.0,\n  \"BMI\": 26.2,\n  \"Exercise_Frequency\": 6,\n  \"Daily_Steps\": 12000,\n  \"Blood_Pressure_Systolic\": 120,\n  \"Blood_Pressure_Diastolic\": 75,\n  \"Cholesterol_Level\": 170,\n  \"Blood_Sugar_Level\": 90,\n  \"Sleep_Hours\": 8.0,\n  \"Caloric_Intake\": 2500,\n  \"Protein_Intake\": 120,\n  \"Carbohydrate_Intake\": 300,\n  \"Fat_Intake\": 80\n}\n"
-            },
-            "url": {
-              "raw": "{{base_url}}/predict",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "predict"
-              ]
-            },
-            "description": "Sample request for an active male with good health metrics"
-          },
-          "response": []
-        },
-        {
-          "name": "Sample Request - Sedentary Female",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json",
-                "type": "text"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"Age\": 45,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 160.0,\n  \"Weight_kg\": 70.0,\n  \"BMI\": 27.3,\n  \"Exercise_Frequency\": 1,\n  \"Daily_Steps\": 3000,\n  \"Blood_Pressure_Systolic\": 135,\n  \"Blood_Pressure_Diastolic\": 85,\n  \"Cholesterol_Level\": 210,\n  \"Blood_Sugar_Level\": 105,\n  \"Sleep_Hours\": 6.0,\n  \"Caloric_Intake\": 1800,\n  \"Protein_Intake\": 60,\n  \"Carbohydrate_Intake\": 200,\n  \"Fat_Intake\": 60\n}\n"
-            },
-            "url": {
-              "raw": "{{base_url}}/predict",
-              "host": [
-                "{{base_url}}"
-              ],
-              "path": [
-                "predict"
-              ]
-            },
-            "description": "Sample request for a sedentary female with elevated health risks"
-          },
-          "response": []
+            ]
         }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "base_url",
-      "value": "http://localhost:8000",
-      "type": "string",
-      "description": "Base URL for the Gymbite API. Change to your deployed server URL."
-    },
-    {
-      "key": "hf_spaces_url",
-      "value": "https://huggingface.co/spaces/Nouman1338/gymbite-model",
-      "type": "string",
-      "description": "Hugging Face Spaces deployment URL (for production use)"
-    }
-  ]
+    ],
+    "variable": [
+        {
+            "key": "base_url",
+            "value": "https://huggingface.co/spaces/Nouman1338/gymbite-model",
+            "type": "string",
+            "description": "Production API URL - Gymbite Nutrition API on Hugging Face Spaces"
+        }
+    ]
 }
