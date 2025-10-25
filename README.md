@@ -1,7 +1,7 @@
 ﻿---
 title: Gymbite Nutrition Model
 emoji: 🥗
-colorFrom: orange
+colorFrom: yellow
 colorTo: green
 sdk: docker
 app_file: app.py
