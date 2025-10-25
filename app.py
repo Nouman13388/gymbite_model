@@ -2,6 +2,7 @@ from typing import Any, Dict, Optional
 import time
 import logging
 import os
+import urllib.request
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -31,6 +32,20 @@ class Input(BaseModel):
     Fat_Intake: float
 
 
+def download_model_from_github() -> None:
+    """Download the model file from GitHub releases if not present locally."""
+    model_url = "https://github.com/Nouman13388/gymbite_model/releases/download/v1.0/enhanced_diet_predictor.pkl"
+    model_file = "enhanced_diet_predictor.pkl"
+    
+    logger.info(f"Downloading model from {model_url}...")
+    try:
+        urllib.request.urlretrieve(model_url, model_file)
+        logger.info(f"✅ Model downloaded successfully to {model_file}")
+    except Exception as e:
+        logger.error(f"Failed to download model: {e}")
+        raise
+
+
 def create_app() -> FastAPI:
     app = FastAPI(title="Gymbite Nutrition API")
 
@@ -56,6 +71,15 @@ def create_app() -> FastAPI:
         """Load model on first request if not already loaded."""
         if getattr(app.state, "model_loaded", False):
             return  # Already loaded
+
+        # Download model if missing
+        if not os.path.exists("enhanced_diet_predictor.pkl"):
+            logger.info("Downloading model from GitHub...")
+            try:
+                download_model_from_github()
+            except Exception as e:
+                logger.error(f"Failed to download model: {e}")
+                raise HTTPException(status_code=503, detail="Model download failed")
 
         try:
             predictor.load_model()  # assumes default path 'enhanced_diet_predictor.pkl'
