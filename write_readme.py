@@ -1,4 +1,7 @@
-﻿# Gymbite - ML Nutrition Recommendation System
+#!/usr/bin/env python3
+# Script to write README.md
+
+content = r"""# Gymbite - ML Nutrition Recommendation System
 
 Gymbite exposes a small FastAPI service that loads a trained scikit-learn model and serves personalized nutrition recommendations via POST `/predict`.
 
@@ -11,14 +14,14 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-1. Install dependencies:
+2. Install dependencies:
 
 ```powershell
 pip install -r requirements.txt
 pip install -r dev-requirements.txt  # optional: pytest, httpx
 ```
 
-1. Run the app locally:
+3. Run the app locally:
 
 ```powershell
 python -m uvicorn app:app --host 127.0.0.1 --port 8000
@@ -173,3 +176,9 @@ git push origin dev
 ---
 
 If you would like, I can add a small CI check that confirms `/health` returns `status: ok` after the service starts.
+"""
+
+with open(r"c:\Users\Nouman\OneDrive\Documents\gymbite_model\README.md", "w") as f:
+    f.write(content)
+
+print("README.md successfully written!")
