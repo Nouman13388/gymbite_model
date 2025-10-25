@@ -330,6 +330,21 @@ LOG_LEVEL=info
 - **Model not found:** Run `git lfs pull` to download the model file from Git LFS
 - **Import errors:** Install dependencies with `pip install -r requirements.txt`
 - **Port already in use:** Change port with `--port 9000` in uvicorn command
+- **Cloud Run startup timeout:** App now uses lazy loading - model loads on first /predict request, not on startup
+
+## ✅ Testing
+
+Run the test suite locally:
+
+```bash
+pytest test_api.py -v
+```
+
+Tests cover:
+- Health endpoint availability and response format
+- Predict endpoint input validation
+- Prediction response format and field types
+- Missing field validation
 
 ### Alternative Platforms
 
