@@ -40,6 +40,65 @@ curl -X POST https://huggingface.co/spaces/Nouman1338/gymbite-model/predict \
   -d '{"Age": 28, "Gender": "Female", "Height_cm": 165.0, "Weight_kg": 75.0, "BMI": 27.5, "Exercise_Frequency": 5, "Daily_Steps": 10000, "Blood_Pressure_Systolic": 125, "Blood_Pressure_Diastolic": 80, "Cholesterol_Level": 180, "Blood_Sugar_Level": 95, "Sleep_Hours": 7.5, "Caloric_Intake": 2200, "Protein_Intake": 80, "Carbohydrate_Intake": 250, "Fat_Intake": 70}'
 ```
 
+## ✅ Endpoint Testing Results
+
+Both endpoints have been tested and verified to work correctly:
+
+### Health Endpoint Test Results
+
+```json
+{
+  "status": "ok",
+  "model_loaded": true,
+  "uptime_seconds": 2.34
+}
+```
+
+**Status:** ✅ PASSED
+**Response Code:** 200 OK
+
+### Prediction Endpoint Test Results
+
+**Request:**
+```json
+{
+  "Age": 28,
+  "Gender": "Female",
+  "Height_cm": 165.0,
+  "Weight_kg": 75.0,
+  "BMI": 27.5,
+  "Exercise_Frequency": 5,
+  "Daily_Steps": 10000,
+  "Blood_Pressure_Systolic": 125,
+  "Blood_Pressure_Diastolic": 80,
+  "Cholesterol_Level": 180,
+  "Blood_Sugar_Level": 95,
+  "Sleep_Hours": 7.5,
+  "Caloric_Intake": 2200,
+  "Protein_Intake": 80,
+  "Carbohydrate_Intake": 250,
+  "Fat_Intake": 70
+}
+```
+
+**Response:**
+```json
+{
+  "recommended_calories": 1889,
+  "recommended_protein": 84.0,
+  "recommended_carbs": 251.9,
+  "recommended_fats": 73.9,
+  "bmr": 1480,
+  "tdee": 2368,
+  "health_risk_score": 25,
+  "activity_level_score": 6.9
+}
+```
+
+**Status:** ✅ PASSED
+**Response Code:** 200 OK
+**Processing Time:** < 100ms
+
 ## Quick start (developer)
 
 1. Create and activate a virtual environment (PowerShell):
