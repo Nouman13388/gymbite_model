@@ -1,0 +1,20 @@
+steps:
+  # 1. Install git and git-lfs
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['apt-get', 'update', '-y', '&&', 'apt-get', 'install', '-y', 'git-lfs']
+    
+  # 2. Pull the LFS files
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['lfs', 'pull']
+    
+  # 3. Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA', '.']
+    
+  # 4. Push the image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA']
+
+# 5. Tell Cloud Run to deploy the newly pushed image
+images:
+  - 'gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA'

@@ -79,58 +79,67 @@ Verify services are enabled:
 gcloud services list --enabled | grep -E "run|cloudbuild|artifact|container"
 ```
 
-### Step 5: Build Docker Image Using Cloud Build
+### Step 5: Build Docker Image Using Cloud Build with Git LFS Support
 
-Cloud Build compiles your Docker image in the cloud (no need to build locally).
+Cloud Build compiles your Docker image in the cloud with Git LFS file support (the model file is tracked with Git LFS).
 
-```bash
-# Build the image and store it in Artifact Registry
-# Replace REGION with your preferred region (e.g., us-central1, europe-west1)
-gcloud builds submit \
-  --region=REGION \
-  --tag REGION-docker.pkg.dev/YOUR-PROJECT-ID/gymbite/gymbite-model:latest
-
-# Alternative: Use Container Registry (simpler)
-gcloud builds submit --tag gcr.io/YOUR-PROJECT-ID/gymbite-model:latest
-```
-
-**Example with us-central1 and Container Registry:**
+**Important:** The `cloudbuild.yaml` file in your repository handles:
+1. Installing Git LFS
+2. Pulling Git LFS files (your 125.6 MB model)
+3. Building the Docker image
+4. Pushing it to Container Registry
 
 ```bash
-gcloud builds submit --tag gcr.io/YOUR-PROJECT-ID/gymbite-model:latest
+# Build using the custom cloudbuild.yaml configuration
+gcloud builds submit --config cloudbuild.yaml .
 ```
+
+This command:
+- Uses `cloudbuild.yaml` to handle Git LFS files properly
+- Builds the image as `gcr.io/YOUR-PROJECT-ID/gymbite-ml-api:COMMIT_SHA`
+- Automatically pushes the built image to Container Registry
 
 Monitor the build progress in the Cloud Console:
 
 - Open: `https://console.cloud.google.com/cloud-build/builds`
 
+**Troubleshooting:**
+- If build still fails, check the build logs for Git LFS pull errors
+- Ensure your GitHub credentials are configured in Cloud Build (Settings → Connected Repositories)
+
 ### Step 6: Deploy to Cloud Run
 
-Deploy your built image as a Cloud Run service:
+Deploy your built image as a Cloud Run service with the new image path from Cloud Build:
 
 ```bash
-gcloud run deploy gymbite-model \
-  --image gcr.io/YOUR-PROJECT-ID/gymbite-model:latest \
-  --platform managed \
+gcloud run deploy gymbite-ml-api \
+  --image gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA \
   --region us-central1 \
   --allow-unauthenticated \
-  --memory 512Mi \
-  --timeout 3600 \
-  --set-env-vars LOG_LEVEL=info
+  --memory 2Gi \
+  --timeout 600 \
+  --platform managed
 ```
 
 **Parameters explanation:**
 
-| Parameter                 | Value            | Purpose                               |
-| ------------------------- | ---------------- | ------------------------------------- |
-| `deploy`                  | `gymbite-model`  | Service name                          |
-| `--image`                 | `gcr.io/...`     | Docker image location                 |
-| `--platform`              | `managed`        | Managed Cloud Run (recommended)       |
-| `--region`                | `us-central1`    | GCP region (adjust as needed)         |
-| `--allow-unauthenticated` |                  | Make API public (no authentication)   |
-| `--memory`                | `512Mi`          | Memory allocation (512 MB sufficient) |
-| `--timeout`               | `3600`           | Request timeout in seconds (1 hour)   |
-| `--set-env-vars`          | `LOG_LEVEL=info` | Environment variables                 |
+| Parameter                 | Value                                   | Purpose                               |
+| ------------------------- | --------------------------------------- | ------------------------------------- |
+| `deploy`                  | `gymbite-ml-api`                        | Service name                          |
+| `--image`                 | `gcr.io/$PROJECT_ID/gymbite-ml-api:...` | Docker image location from Cloud Build |
+| `--region`                | `us-central1`                           | GCP region (adjust as needed)         |
+| `--allow-unauthenticated` |                                         | Make API public (no authentication)   |
+| `--memory`                | `2Gi`                                   | Memory allocation (2 GB for model)    |
+| `--timeout`               | `600`                                   | Request timeout in seconds (10 min)   |
+| `--platform`              | `managed`                               | Managed Cloud Run (recommended)       |
+
+**Note:** Replace `$PROJECT_ID` with your actual GCP project ID, or use:
+
+```bash
+export PROJECT_ID=$(gcloud config get-value project)
+```
+
+Then run the deploy command above.
 
 **Common Regions:**
 
