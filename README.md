@@ -1,534 +1,1066 @@
-﻿# Gymbite - ML Nutrition Recommendation System# Gymbite - ML Nutrition Recommendation System
+﻿# Gymbite - ML Nutrition Recommendation System# Gymbite - ML Nutrition Recommendation System# Gymbite - ML Nutrition Recommendation System
 
 
 
-> A production-ready FastAPI-based nutrition recommendation system powered by scikit-learn ML model. Get personalized nutrition guidance based on comprehensive health metrics.Gymbite is a FastAPI-based nutrition recommendation system powered by a trained scikit-learn model. It provides personalized nutrition recommendations based on user health metrics.
+> A production-ready FastAPI-based nutrition recommendation system powered by scikit-learn ML model. Get personalized nutrition guidance based on comprehensive health metrics.
 
 
 
-**Current Deployment Status:** 🚀 **Live** at https://gymbite-model-480367101608.europe-west1.run.app**Key Features:**
+**Current Deployment Status:** 🚀 **Live** at https://gymbite-model-480367101608.europe-west1.run.app> A production-ready FastAPI-based nutrition recommendation system powered by scikit-learn ML model. Get personalized nutrition guidance based on comprehensive health metrics.Gymbite is a FastAPI-based nutrition recommendation system powered by a trained scikit-learn model. It provides personalized nutrition recommendations based on user health metrics.
 
 
-
----- 🎯 ML-powered nutrition recommendations
-
-- ⚡ Fast REST API with FastAPI
-
-## 📋 Table of Contents- 🔄 Easy local development
-
-- 🚀 Cloud-ready (GCP, AWS, Azure, etc.)
-
-- [Features](#-features)- 📊 Uses scikit-learn Random Forest model (16 inputs → 8 outputs)
-
-- [Quick Start](#-quick-start)
-
-- [Architecture](#-architecture)## 🏗️ Architecture
-
-- [API Endpoints](#-api-endpoints)
-
-- [Testing](#-testing)```text
-
-- [Cloud Deployment](#-cloud-deployment)User Request → FastAPI Endpoint → scikit-learn Model → JSON Response
-
-- [Local Development](#-local-development)```
-
-- [Troubleshooting](#-troubleshooting)
-
-- [Project Structure](#-project-structure)- **Input:** 16 health/lifestyle parameters
-
-- **Output:** 8 nutrition recommendations
-
----- **Model:** Enhanced Diet Predictor (scikit-learn MultiOutputRegressor)
-
-- **Response Time:** < 50ms
-
-## 🎯 Features
-
-## ⚡ Quick Start - Local Development
-
-- ✅ **ML-Powered Predictions** - scikit-learn Random Forest with 16 inputs → 8 outputs
-
-- ⚡ **Fast API** - Sub-100ms response time with FastAPI framework### Prerequisites
-
-- 🔄 **Lazy Model Loading** - App starts instantly, model loads on first request
-
-- 📊 **8 Recommendation Outputs** - Calories, protein, carbs, fats, BMR, TDEE, health risk score, activity level```bash
-
-- 🐳 **Docker Ready** - Containerized for GCP Cloud Run and other platformsPython 3.10+
-
-- 🧪 **Fully Tested** - 5 pytest test cases with 100% pass ratepip
-
-- 📡 **GitHub Releases** - Automatic model download from GitHub releases (solves Git LFS issue)git
-
-- 🌐 **Production Ready** - Health checks, error handling, input validation```
-
-
-
----### Installation
-
-
-
-## ⚡ Quick Start1. **Clone the repository:**
-
-
-
-### 30-Second Local Setup   ```bash
-
-   git clone https://github.com/Nouman13388/gymbite_model.git
-
-```bash   cd gymbite_model
-
-# 1. Clone and navigate   ```
-
-git clone https://github.com/Nouman13388/gymbite_model.git
-
-cd gymbite_model2. **Install dependencies:**
-
-
-
-# 2. Create virtual environment   ```bash
-
-python -m venv .venv   pip install -r requirements.txt
-
-.\.venv\Scripts\Activate.ps1  # Windows PowerShell   ```
-
-# or: source .venv/bin/activate  # macOS/Linux
-
-3. **Run the API locally:**
-
-# 3. Install and run
-
-pip install -r requirements.txt   ```bash
-
-python app.py   # Option A: Using Python directly
-
-```   python app.py
-
-
-
-**API will be available at:** `http://localhost:8000`   # Option B: Using uvicorn
-
-   uvicorn app:app --host 127.0.0.1 --port 8000 --reload
-
-### 🔗 Useful Links   ```
-
-
-
-- **Swagger UI (Interactive Docs):** http://localhost:8000/docs4. **API is now running at:** `http://localhost:8000`
-
-- **ReDoc (Alternative Docs):** http://localhost:8000/redoc   - Health check: `http://localhost:8000/health`
-
-- **Health Check:** http://localhost:8000/health   - Predictions: `http://localhost:8000/predict`
-
-- **Predictions:** http://localhost:8000/predict (POST)   - Docs: `http://localhost:8000/docs` (auto-generated Swagger UI)
-
-
-
----## ✅ Endpoint Testing Results
-
-
-
-## 🏗️ Architecture"status": "ok",
-
-"model_loaded": true,
-
-```"uptime_seconds": 2.34
-
-┌─────────────────┐}
-
-│   User Request  │
-
-├─────────────────┤````
-
-│  FastAPI Router │
-
-├─────────────────┤**Status:** ✅ PASSED
-
-│ Input Validation│ (Pydantic)**Response Code:** 200 OK
-
-├─────────────────┤
-
-│  Load Model*    │ (*lazy load on first request)### Prediction Endpoint Test Results
-
-├─────────────────┤
-
-│  Make Prediction│ (scikit-learn)**Request:**
-
-├─────────────────┤
-
-│ Validate Output │ (Health-safe bounds)```json
-
-├─────────────────┤{
-
-│  JSON Response  │  "Age": 28,
-
-└─────────────────┘  "Gender": "Female",
-
-```  "Height_cm": 165.0,
-
-  "Weight_kg": 75.0,
-
-### Key Components  "BMI": 27.5,
-
-  "Exercise_Frequency": 5,
-
-| Component | Details |  "Daily_Steps": 10000,
-
-|-----------|---------|  "Blood_Pressure_Systolic": 125,
-
-| **Framework** | FastAPI 0.104+ with Uvicorn |  "Blood_Pressure_Diastolic": 80,
-
-| **ML Model** | scikit-learn MultiOutputRegressor (Random Forest) |  "Cholesterol_Level": 180,
-
-| **Model Size** | 125.6 MB (tracked via Git LFS, auto-downloaded) |  "Blood_Sugar_Level": 95,
-
-| **Python Version** | 3.10+ (tested on 3.11, 3.13) |  "Sleep_Hours": 7.5,
-
-| **Deployment** | Google Cloud Run (2 GB memory, 600s timeout) |  "Caloric_Intake": 2200,
-
-| **Response Time** | < 100ms per prediction |  "Protein_Intake": 80,
-
-  "Carbohydrate_Intake": 250,
-
----  "Fat_Intake": 70
-
-}
-
-## 📡 API Endpoints````
-
-
-
-### 1. GET `/health` - Health Check**Response:**
-
-
-
-**Purpose:** Readiness probe and model status check```json
-
-{
-
-**Response:**  "recommended_calories": 1889,
-
-```json  "recommended_protein": 84.0,
-
-{  "recommended_carbs": 251.9,
-
-  "status": "ok",  "recommended_fats": 73.9,
-
-  "model_loaded": true,  "bmr": 1480,
-
-  "uptime_seconds": 156.32  "tdee": 2368,
-
-}  "health_risk_score": 25,
-
-```  "activity_level_score": 6.9
-
-}
-
-**Status Values:**```
-
-- `"ok"` - Model loaded and ready
-
-- `"degraded"` - App running but model not yet loaded (will load on first /predict)**Status:** ✅ PASSED
-
-**Response Code:** 200 OK
-
-**HTTP Code:** `200 OK`**Processing Time:** < 100ms
-
-
-
----## Quick start (developer)
-
-
-
-### 2. POST `/predict` - Get Nutrition Recommendations1. Create and activate a virtual environment (PowerShell):
-
-
-
-**Purpose:** Get personalized nutrition recommendations based on health metrics```powershell
-
-python -m venv .venv
-
-**Request Body (16 parameters):**.\.venv\Scripts\Activate.ps1
-
-```json```
-
-{
-
-  "Age": 28,1. Install dependencies:
-
-  "Gender": "Female",
-
-  "Height_cm": 165.0,```powershell
-
-  "Weight_kg": 75.0,pip install -r requirements.txt
-
-  "BMI": 27.5,pip install -r dev-requirements.txt  # optional: pytest, httpx
-
-  "Exercise_Frequency": 5,```
-
-  "Daily_Steps": 10000,
-
-  "Blood_Pressure_Systolic": 125,1. Run the app locally:
-
-  "Blood_Pressure_Diastolic": 80,
-
-  "Cholesterol_Level": 180,```powershell
-
-  "Blood_Sugar_Level": 95,python -m uvicorn app:app --host 127.0.0.1 --port 8000
-
-  "Sleep_Hours": 7.5,```
-
-  "Caloric_Intake": 2200,
-
-  "Protein_Intake": 80,## API: POST /predict
-
-  "Carbohydrate_Intake": 250,
-
-  "Fat_Intake": 70Request: JSON body with the input features. Example shape:
-
-}
-
-``````json
-
-{
-
-**Successful Response (200 OK):**  "Age": 28,
-
-```json  "Gender": "Female",
-
-{  "Height_cm": 165.0,
-
-  "recommended_calories": 1889,  "Weight_kg": 75.0,
-
-  "recommended_protein": 84.0,  "BMI": 27.5,
-
-  "recommended_carbs": 251.9,  "Exercise_Frequency": 5,
-
-  "recommended_fats": 73.9,  "Daily_Steps": 10000,
-
-  "bmr": 1480,  "Blood_Pressure_Systolic": 125,
-
-  "tdee": 2368,  "Blood_Pressure_Diastolic": 80,
-
-  "health_risk_score": 25,  "Cholesterol_Level": 180,
-
-  "activity_level_score": 6.9  "Blood_Sugar_Level": 95,
-
-}  "Sleep_Hours": 7.5,
-
-```  "Caloric_Intake": 2200,
-
-  "Protein_Intake": 80,
-
-**Error Responses:**  "Carbohydrate_Intake": 250,
-
-- `422 Unprocessable Entity` - Missing/invalid input fields  "Fat_Intake": 70
-
-- `503 Service Unavailable` - Model download failed}
-
-- `500 Internal Server Error` - Model inference error```
-
-
-
----Successful response (abridged):
-
-
-
-### 📝 Request Examples```json
-
-{
-
-#### **Using PowerShell:**  "recommended_calories": 1889,
-
-```powershell  "recommended_protein": 84.0,
-
-$payload = @{  "recommended_carbs": 251.9,
-
-  Age = 28  "recommended_fats": 73.9,
-
-  Gender = 'Female'  "bmr": 1480,
-
-  Height_cm = 165.0  "tdee": 2368
-
-  Weight_kg = 75.0}
-
-  BMI = 27.5```
-
-  Exercise_Frequency = 5
-
-  Daily_Steps = 10000## Example requests with curl
-
-  Blood_Pressure_Systolic = 125
-
-  Blood_Pressure_Diastolic = 80Linux/macOS or Windows with curl installed:
-
-  Cholesterol_Level = 180
-
-  Blood_Sugar_Level = 95```bash
-
-  Sleep_Hours = 7.5curl -X POST http://127.0.0.1:8000/predict \
-
-  Caloric_Intake = 2200  -H "Content-Type: application/json" \
-
-  Protein_Intake = 80  -d '{
-
-  Carbohydrate_Intake = 250    "Age": 28,
-
-  Fat_Intake = 70    "Gender": "Female",
-
-}    "Height_cm": 165.0,
-
-    "Weight_kg": 75.0,
-
-Invoke-RestMethod -Uri "http://localhost:8000/predict" `    "BMI": 27.5,
-
-  -Method Post `    "Exercise_Frequency": 5,
-
-  -Body (ConvertTo-Json $payload) `    "Daily_Steps": 10000,
-
-  -ContentType 'application/json'    "Blood_Pressure_Systolic": 125,
-
-```    "Blood_Pressure_Diastolic": 80,
-
-    "Cholesterol_Level": 180,
-
-#### **Using cURL:**    "Blood_Sugar_Level": 95,
-
-```bash    "Sleep_Hours": 7.5,
-
-curl -X POST http://localhost:8000/predict \    "Caloric_Intake": 2200,
-
-  -H "Content-Type: application/json" \    "Protein_Intake": 80,
-
-  -d '{    "Carbohydrate_Intake": 250,
-
-    "Age": 28,    "Fat_Intake": 70
-
-    "Gender": "Female",  }'
-
-    "Height_cm": 165.0,```
-
-    "Weight_kg": 75.0,
-
-    "BMI": 27.5,## Example requests with PowerShell
-
-    "Exercise_Frequency": 5,
-
-    "Daily_Steps": 10000,Windows PowerShell:
-
-    "Blood_Pressure_Systolic": 125,
-
-    "Blood_Pressure_Diastolic": 80,```powershell
-
-    "Cholesterol_Level": 180,$payload = @{
-
-    "Blood_Sugar_Level": 95,  Age = 28
-
-    "Sleep_Hours": 7.5,  Gender = 'Female'
-
-    "Caloric_Intake": 2200,  Height_cm = 165.0
-
-    "Protein_Intake": 80,  Weight_kg = 75.0
-
-    "Carbohydrate_Intake": 250,  BMI = 27.5
-
-    "Fat_Intake": 70  Exercise_Frequency = 5
-
-  }'  Daily_Steps = 10000
-
-```  Blood_Pressure_Systolic = 125
-
-  Blood_Pressure_Diastolic = 80
-
-#### **Using Python Requests:**  Cholesterol_Level = 180
-
-```python  Blood_Sugar_Level = 95
-
-import requests  Sleep_Hours = 7.5
-
-  Caloric_Intake = 2200
-
-url = "http://localhost:8000/predict"  Protein_Intake = 80
-
-payload = {  Carbohydrate_Intake = 250
-
-    "Age": 28,  Fat_Intake = 70
-
-    "Gender": "Female",}
-
-    "Height_cm": 165.0,Invoke-RestMethod -Uri http://127.0.0.1:8000/predict `
-
-    "Weight_kg": 75.0,  -Method Post `
-
-    # ... (rest of fields)  -Body (ConvertTo-Json $payload) `
-
-}  -ContentType 'application/json'
-
-```
-
-response = requests.post(url, json=payload)
-
-print(response.json())## Health / readiness endpoint
-
-```
-
-GET `/health` returns JSON with these fields:
 
 ---
 
-- `status`: "ok" or "degraded"
 
-## 🧪 Testing- `model_loaded`: boolean
 
-- `uptime_seconds`: float or null
+## 📋 Table of Contents**Current Deployment Status:** 🚀 **Live** at https://gymbite-model-480367101608.europe-west1.run.app**Key Features:**
 
-### Run Local Tests
 
-Example healthy response:
 
-```bash
+- [Features](#-features)
 
-# Install test dependencies```json
+- [Quick Start](#-quick-start)
 
-pip install -r dev-requirements.txt{
+- [Architecture](#-architecture)---- 🎯 ML-powered nutrition recommendations
 
-  "status": "ok",
+- [API Endpoints](#-api-endpoints)
 
-# Run all tests with verbose output  "model_loaded": true,
+- [Testing](#-testing)- ⚡ Fast REST API with FastAPI
 
-pytest test_api.py -v  "uptime_seconds": 123.45
+- [Cloud Deployment](#-cloud-deployment)
 
-}
+- [Local Development](#-local-development)## 📋 Table of Contents- 🔄 Easy local development
 
-# Run specific test```
+- [Troubleshooting](#-troubleshooting)
 
-pytest test_api.py::test_predict_response_format -v
+- 🚀 Cloud-ready (GCP, AWS, Azure, etc.)
 
-If the model failed to load at startup, `status` will be `degraded` and `model_loaded` will be `false`. Use this endpoint for readiness probes.
+---
 
-# Run with coverage
+- [Features](#-features)- 📊 Uses scikit-learn Random Forest model (16 inputs → 8 outputs)
 
-pytest test_api.py --cov=app## 🐳 Docker & Local Deployment
+## 🎯 Features
+
+- [Quick Start](#-quick-start)
+
+- ✅ **ML-Powered Predictions** - scikit-learn Random Forest with 16 inputs → 8 outputs
+
+- ⚡ **Fast API** - Sub-100ms response time with FastAPI framework- [Architecture](#-architecture)## 🏗️ Architecture
+
+- 🔄 **Lazy Model Loading** - App starts instantly, model loads on first request
+
+- 📊 **8 Recommendation Outputs** - Calories, protein, carbs, fats, BMR, TDEE, health risk score, activity level- [API Endpoints](#-api-endpoints)
+
+- 🐳 **Docker Ready** - Containerized for GCP Cloud Run and other platforms
+
+- 🧪 **Fully Tested** - 5 pytest test cases with 100% pass rate- [Testing](#-testing)```text
+
+- 📡 **GitHub Releases** - Automatic model download from GitHub releases (solves Git LFS issue)
+
+- 🌐 **Production Ready** - Health checks, error handling, input validation- [Cloud Deployment](#-cloud-deployment)User Request → FastAPI Endpoint → scikit-learn Model → JSON Response
+
+
+
+---- [Local Development](#-local-development)```
+
+
+
+## ⚡ Quick Start- [Troubleshooting](#-troubleshooting)
+
+
+
+### 30-Second Local Setup- [Project Structure](#-project-structure)- **Input:** 16 health/lifestyle parameters
+
+
+
+```bash- **Output:** 8 nutrition recommendations
+
+# 1. Clone and navigate
+
+git clone https://github.com/Nouman13388/gymbite_model.git---- **Model:** Enhanced Diet Predictor (scikit-learn MultiOutputRegressor)
+
+cd gymbite_model
+
+- **Response Time:** < 50ms
+
+# 2. Create virtual environment
+
+python -m venv .venv## 🎯 Features
+
+.\.venv\Scripts\Activate.ps1  # Windows PowerShell
+
+# or: source .venv/bin/activate  # macOS/Linux## ⚡ Quick Start - Local Development
+
+
+
+# 3. Install and run- ✅ **ML-Powered Predictions** - scikit-learn Random Forest with 16 inputs → 8 outputs
+
+pip install -r requirements.txt
+
+python app.py- ⚡ **Fast API** - Sub-100ms response time with FastAPI framework### Prerequisites
 
 ```
 
-### Build and Run with Docker
+- 🔄 **Lazy Model Loading** - App starts instantly, model loads on first request
 
-### Test Coverage
+**API will be available at:** `http://localhost:8000`
+
+- 📊 **8 Recommendation Outputs** - Calories, protein, carbs, fats, BMR, TDEE, health risk score, activity level```bash
+
+### 🔗 Useful Links
+
+- 🐳 **Docker Ready** - Containerized for GCP Cloud Run and other platformsPython 3.10+
+
+- **Swagger UI (Interactive Docs):** http://localhost:8000/docs
+
+- **ReDoc (Alternative Docs):** http://localhost:8000/redoc- 🧪 **Fully Tested** - 5 pytest test cases with 100% pass ratepip
+
+- **Health Check:** http://localhost:8000/health
+
+- **Predictions:** http://localhost:8000/predict (POST)- 📡 **GitHub Releases** - Automatic model download from GitHub releases (solves Git LFS issue)git
+
+
+
+---- 🌐 **Production Ready** - Health checks, error handling, input validation```
+
+
+
+## 🏗️ Architecture
+
+
+
+```---### Installation
+
+┌─────────────────┐
+
+│   User Request  │
+
+├─────────────────┤
+
+│  FastAPI Router │## ⚡ Quick Start1. **Clone the repository:**
+
+├─────────────────┤
+
+│ Input Validation│ (Pydantic)
+
+├─────────────────┤
+
+│  Load Model*    │ (*lazy load on first request)### 30-Second Local Setup   ```bash
+
+├─────────────────┤
+
+│  Make Prediction│ (scikit-learn)   git clone https://github.com/Nouman13388/gymbite_model.git
+
+├─────────────────┤
+
+│ Validate Output │ (Health-safe bounds)```bash   cd gymbite_model
+
+├─────────────────┤
+
+│  JSON Response  │# 1. Clone and navigate   ```
+
+└─────────────────┘
+
+```git clone https://github.com/Nouman13388/gymbite_model.git
+
+
+
+### Key Componentscd gymbite_model2. **Install dependencies:**
+
+
+
+| Component | Details |
+
+|-----------|---------|
+
+| **Framework** | FastAPI 0.104+ with Uvicorn |# 2. Create virtual environment   ```bash
+
+| **ML Model** | scikit-learn MultiOutputRegressor (Random Forest) |
+
+| **Model Size** | 125.6 MB (tracked via Git LFS, auto-downloaded) |python -m venv .venv   pip install -r requirements.txt
+
+| **Python Version** | 3.10+ |
+
+| **Deployment** | Google Cloud Run (2 GB memory, 600s timeout) |.\.venv\Scripts\Activate.ps1  # Windows PowerShell   ```
+
+| **Response Time** | < 100ms per prediction |
+
+# or: source .venv/bin/activate  # macOS/Linux
+
+---
+
+3. **Run the API locally:**
+
+## 📡 API Endpoints
+
+# 3. Install and run
+
+### 1. GET `/health` - Health Check
+
+pip install -r requirements.txt   ```bash
+
+**Response:**
+
+```jsonpython app.py   # Option A: Using Python directly
+
+{
+
+  "status": "ok",```   python app.py
+
+  "model_loaded": true,
+
+  "uptime_seconds": 156.32
+
+}
+
+```**API will be available at:** `http://localhost:8000`   # Option B: Using uvicorn
+
+
+
+**Status Values:**   uvicorn app:app --host 127.0.0.1 --port 8000 --reload
+
+- `"ok"` - Model loaded and ready
+
+- `"degraded"` - App running, model loading on first request### 🔗 Useful Links   ```
+
+
+
+---
+
+
+
+### 2. POST `/predict` - Get Nutrition Recommendations- **Swagger UI (Interactive Docs):** http://localhost:8000/docs4. **API is now running at:** `http://localhost:8000`
+
+
+
+**Request (16 parameters):**- **ReDoc (Alternative Docs):** http://localhost:8000/redoc   - Health check: `http://localhost:8000/health`
+
+```json
+
+{- **Health Check:** http://localhost:8000/health   - Predictions: `http://localhost:8000/predict`
+
+  "Age": 28,
+
+  "Gender": "Female",- **Predictions:** http://localhost:8000/predict (POST)   - Docs: `http://localhost:8000/docs` (auto-generated Swagger UI)
+
+  "Height_cm": 165.0,
+
+  "Weight_kg": 75.0,
+
+  "BMI": 27.5,
+
+  "Exercise_Frequency": 5,---## ✅ Endpoint Testing Results
+
+  "Daily_Steps": 10000,
+
+  "Blood_Pressure_Systolic": 125,
+
+  "Blood_Pressure_Diastolic": 80,
+
+  "Cholesterol_Level": 180,## 🏗️ Architecture"status": "ok",
+
+  "Blood_Sugar_Level": 95,
+
+  "Sleep_Hours": 7.5,"model_loaded": true,
+
+  "Caloric_Intake": 2200,
+
+  "Protein_Intake": 80,```"uptime_seconds": 2.34
+
+  "Carbohydrate_Intake": 250,
+
+  "Fat_Intake": 70┌─────────────────┐}
+
+}
+
+```│   User Request  │
+
+
+
+**Response (200 OK):**├─────────────────┤````
+
+```json
+
+{│  FastAPI Router │
+
+  "recommended_calories": 1889,
+
+  "recommended_protein": 84.0,├─────────────────┤**Status:** ✅ PASSED
+
+  "recommended_carbs": 251.9,
+
+  "recommended_fats": 73.9,│ Input Validation│ (Pydantic)**Response Code:** 200 OK
+
+  "bmr": 1480,
+
+  "tdee": 2368,├─────────────────┤
+
+  "health_risk_score": 25,
+
+  "activity_level_score": 6.9│  Load Model*    │ (*lazy load on first request)### Prediction Endpoint Test Results
+
+}
+
+```├─────────────────┤
+
+
+
+**Error Codes:**│  Make Prediction│ (scikit-learn)**Request:**
+
+- `422` - Missing/invalid input fields
+
+- `503` - Model download failed├─────────────────┤
+
+- `500` - Model inference error
+
+│ Validate Output │ (Health-safe bounds)```json
+
+---
+
+├─────────────────┤{
+
+### 📝 Request Examples
+
+│  JSON Response  │  "Age": 28,
+
+#### **Using PowerShell:**
+
+```powershell└─────────────────┘  "Gender": "Female",
+
+$payload = @{
+
+  Age = 28```  "Height_cm": 165.0,
+
+  Gender = 'Female'
+
+  Height_cm = 165.0  "Weight_kg": 75.0,
+
+  Weight_kg = 75.0
+
+  BMI = 27.5### Key Components  "BMI": 27.5,
+
+  Exercise_Frequency = 5
+
+  Daily_Steps = 10000  "Exercise_Frequency": 5,
+
+  Blood_Pressure_Systolic = 125
+
+  Blood_Pressure_Diastolic = 80| Component | Details |  "Daily_Steps": 10000,
+
+  Cholesterol_Level = 180
+
+  Blood_Sugar_Level = 95|-----------|---------|  "Blood_Pressure_Systolic": 125,
+
+  Sleep_Hours = 7.5
+
+  Caloric_Intake = 2200| **Framework** | FastAPI 0.104+ with Uvicorn |  "Blood_Pressure_Diastolic": 80,
+
+  Protein_Intake = 80
+
+  Carbohydrate_Intake = 250| **ML Model** | scikit-learn MultiOutputRegressor (Random Forest) |  "Cholesterol_Level": 180,
+
+  Fat_Intake = 70
+
+}| **Model Size** | 125.6 MB (tracked via Git LFS, auto-downloaded) |  "Blood_Sugar_Level": 95,
+
+
+
+Invoke-RestMethod -Uri "http://localhost:8000/predict" `| **Python Version** | 3.10+ (tested on 3.11, 3.13) |  "Sleep_Hours": 7.5,
+
+  -Method Post `
+
+  -Body (ConvertTo-Json $payload) `| **Deployment** | Google Cloud Run (2 GB memory, 600s timeout) |  "Caloric_Intake": 2200,
+
+  -ContentType 'application/json'
+
+```| **Response Time** | < 100ms per prediction |  "Protein_Intake": 80,
+
+
+
+#### **Using cURL:**  "Carbohydrate_Intake": 250,
 
 ```bash
 
-| Test | Purpose | Status |# Build the Docker image
+curl -X POST http://localhost:8000/predict \---  "Fat_Intake": 70
 
-|------|---------|--------|docker build -t gymbite_model:local .
+  -H "Content-Type: application/json" \
+
+  -d '{}
+
+    "Age": 28,
+
+    "Gender": "Female",## 📡 API Endpoints````
+
+    "Height_cm": 165.0,
+
+    "Weight_kg": 75.0,
+
+    "BMI": 27.5,
+
+    "Exercise_Frequency": 5,### 1. GET `/health` - Health Check**Response:**
+
+    "Daily_Steps": 10000,
+
+    "Blood_Pressure_Systolic": 125,
+
+    "Blood_Pressure_Diastolic": 80,
+
+    "Cholesterol_Level": 180,**Purpose:** Readiness probe and model status check```json
+
+    "Blood_Sugar_Level": 95,
+
+    "Sleep_Hours": 7.5,{
+
+    "Caloric_Intake": 2200,
+
+    "Protein_Intake": 80,**Response:**  "recommended_calories": 1889,
+
+    "Carbohydrate_Intake": 250,
+
+    "Fat_Intake": 70```json  "recommended_protein": 84.0,
+
+  }'
+
+```{  "recommended_carbs": 251.9,
+
+
+
+---  "status": "ok",  "recommended_fats": 73.9,
+
+
+
+## 🧪 Testing  "model_loaded": true,  "bmr": 1480,
+
+
+
+### Run Local Tests  "uptime_seconds": 156.32  "tdee": 2368,
+
+
+
+```bash}  "health_risk_score": 25,
+
+# Install test dependencies
+
+pip install -r dev-requirements.txt```  "activity_level_score": 6.9
+
+
+
+# Run all tests with verbose output}
+
+pytest test_api.py -v
+
+**Status Values:**```
+
+# Run specific test
+
+pytest test_api.py::test_predict_response_format -v- `"ok"` - Model loaded and ready
+
+```
+
+- `"degraded"` - App running but model not yet loaded (will load on first /predict)**Status:** ✅ PASSED
+
+### Test Coverage
+
+**Response Code:** 200 OK
+
+| Test | Purpose | Status |
+
+|------|---------|--------|**HTTP Code:** `200 OK`**Processing Time:** < 100ms
 
 | `test_health_endpoint` | Health endpoint returns valid response | ✅ PASSED |
 
-| `test_health_endpoint_fields` | Health response has correct field types | ✅ PASSED |# Run the container
+| `test_health_endpoint_fields` | Health response has correct field types | ✅ PASSED |
 
-| `test_predict_endpoint_input_validation` | Predict accepts valid input | ✅ PASSED |docker run --rm -p 8000:8000 -v "$PWD:/app" --name gymbite_local gymbite_model:local
+| `test_predict_endpoint_input_validation` | Predict accepts valid input | ✅ PASSED |
 
-| `test_predict_response_format` | Predict returns all required fields | ✅ PASSED |```
+| `test_predict_response_format` | Predict returns all required fields | ✅ PASSED |---## Quick start (developer)
+
+| `test_predict_missing_fields` | Predict validates required fields | ✅ PASSED |
+
+
+
+**Test Results:** `5 passed in 3.52s` ✅
+
+### 2. POST `/predict` - Get Nutrition Recommendations1. Create and activate a virtual environment (PowerShell):
+
+### GitHub Actions CI/CD
+
+
+
+The project includes pytest workflow that runs on every push:
+
+- Installs dependencies**Purpose:** Get personalized nutrition recommendations based on health metrics```powershell
+
+- Runs all tests with pytest
+
+- Pulls Git LFS filespython -m venv .venv
+
+- Reports results
+
+**Request Body (16 parameters):**.\.venv\Scripts\Activate.ps1
+
+---
+
+```json```
+
+## ☁️ Cloud Deployment
+
+{
+
+### Google Cloud Run
+
+  "Age": 28,1. Install dependencies:
+
+**Live URL:** https://gymbite-model-480367101608.europe-west1.run.app
+
+  "Gender": "Female",
+
+#### How It Works
+
+  "Height_cm": 165.0,```powershell
+
+**Lazy Loading Strategy:**
+
+- App starts in < 1 second (model NOT loaded)  "Weight_kg": 75.0,pip install -r requirements.txt
+
+- Model automatically downloads on first `/predict` request from GitHub releases
+
+- Model cached in memory for subsequent requests (< 100ms)  "BMI": 27.5,pip install -r dev-requirements.txt  # optional: pytest, httpx
+
+
+
+#### Model Download Flow  "Exercise_Frequency": 5,```
+
+
+
+```  "Daily_Steps": 10000,
+
+App Startup
+
+├─ Initialize FastAPI app  "Blood_Pressure_Systolic": 125,1. Run the app locally:
+
+├─ Set up routes
+
+└─ Ready to receive requests  "Blood_Pressure_Diastolic": 80,
+
+
+
+First /predict Request  "Cholesterol_Level": 180,```powershell
+
+├─ Check if model exists locally
+
+├─ If missing: Download from GitHub (v1.0 release)  "Blood_Sugar_Level": 95,python -m uvicorn app:app --host 127.0.0.1 --port 8000
+
+├─ Load model into memory
+
+└─ Return prediction  "Sleep_Hours": 7.5,```
+
+
+
+Subsequent Requests  "Caloric_Intake": 2200,
+
+└─ Use cached model (< 100ms)
+
+```  "Protein_Intake": 80,## API: POST /predict
+
+
+
+#### Configuration  "Carbohydrate_Intake": 250,
+
+
+
+- Memory: 2 GB  "Fat_Intake": 70Request: JSON body with the input features. Example shape:
+
+- Timeout: 600 seconds
+
+- Region: europe-west1}
+
+- Platform: Managed
+
+- Ingress: Allow all``````json
+
+
+
+#### Deployment Steps{
+
+
+
+1. **Create GitHub Release with Model****Successful Response (200 OK):**  "Age": 28,
+
+   - Go to: https://github.com/Nouman13388/gymbite_model/releases
+
+   - Create release with tag: `v1.0````json  "Gender": "Female",
+
+   - Upload: `enhanced_diet_predictor.pkl`
+
+   - Publish{  "Height_cm": 165.0,
+
+
+
+2. **Deploy to Cloud Run**  "recommended_calories": 1889,  "Weight_kg": 75.0,
+
+   ```bash
+
+   # Using gcloud CLI  "recommended_protein": 84.0,  "BMI": 27.5,
+
+   gcloud run deploy gymbite-model \
+
+     --source . \  "recommended_carbs": 251.9,  "Exercise_Frequency": 5,
+
+     --platform managed \
+
+     --memory 2Gi \  "recommended_fats": 73.9,  "Daily_Steps": 10000,
+
+     --region europe-west1 \
+
+     --allow-unauthenticated  "bmr": 1480,  "Blood_Pressure_Systolic": 125,
+
+   ```
+
+  "tdee": 2368,  "Blood_Pressure_Diastolic": 80,
+
+3. **Verify Deployment**
+
+   ```bash  "health_risk_score": 25,  "Cholesterol_Level": 180,
+
+   # Check health
+
+   curl https://gymbite-model-480367101608.europe-west1.run.app/health  "activity_level_score": 6.9  "Blood_Sugar_Level": 95,
+
+   
+
+   # Make prediction}  "Sleep_Hours": 7.5,
+
+   curl -X POST https://gymbite-model-480367101608.europe-west1.run.app/predict \
+
+     -H "Content-Type: application/json" \```  "Caloric_Intake": 2200,
+
+     -d '{...}'
+
+   ```  "Protein_Intake": 80,
+
+
+
+#### Troubleshooting**Error Responses:**  "Carbohydrate_Intake": 250,
+
+
+
+| Issue | Cause | Solution |- `422 Unprocessable Entity` - Missing/invalid input fields  "Fat_Intake": 70
+
+|-------|-------|----------|
+
+| Container failed to start | Model not downloading | Check GitHub release exists |- `503 Service Unavailable` - Model download failed}
+
+| Startup timeout | Model loading blocked startup | Lazy loading enabled - works on first request |
+
+| 503 Service Unavailable | Download failed | Verify GitHub release URL accessible |- `500 Internal Server Error` - Model inference error```
+
+| 404 Not Found | Route doesn't exist | Check routes in `app.py` |
+
+
+
+---
+
+---Successful response (abridged):
+
+## 💻 Local Development
+
+
+
+### Setup
+
+### 📝 Request Examples```json
+
+```bash
+
+# 1. Clone repository{
+
+git clone https://github.com/Nouman13388/gymbite_model.git
+
+cd gymbite_model#### **Using PowerShell:**  "recommended_calories": 1889,
+
+
+
+# 2. Create virtual environment```powershell  "recommended_protein": 84.0,
+
+python -m venv .venv
+
+$payload = @{  "recommended_carbs": 251.9,
+
+# Windows PowerShell:
+
+.\.venv\Scripts\Activate.ps1  Age = 28  "recommended_fats": 73.9,
+
+
+
+# macOS/Linux:  Gender = 'Female'  "bmr": 1480,
+
+source .venv/bin/activate
+
+  Height_cm = 165.0  "tdee": 2368
+
+# 3. Install dependencies
+
+pip install -r requirements.txt  Weight_kg = 75.0}
+
+pip install -r dev-requirements.txt
+
+  BMI = 27.5```
+
+# 4. Pull model file using Git LFS
+
+git lfs install  Exercise_Frequency = 5
+
+git lfs pull
+
+  Daily_Steps = 10000## Example requests with curl
+
+# 5. Run locally
+
+python app.py  Blood_Pressure_Systolic = 125
+
+```
+
+  Blood_Pressure_Diastolic = 80Linux/macOS or Windows with curl installed:
+
+### Project Structure
+
+  Cholesterol_Level = 180
+
+```
+
+gymbite_model/  Blood_Sugar_Level = 95```bash
+
+├── app.py                           # FastAPI application
+
+├── enhanced_diet_model.py           # ML predictor class  Sleep_Hours = 7.5curl -X POST http://127.0.0.1:8000/predict \
+
+├── enhanced_diet_predictor.pkl      # Trained model (125.6 MB)
+
+├── requirements.txt                 # Production dependencies  Caloric_Intake = 2200  -H "Content-Type: application/json" \
+
+├── dev-requirements.txt             # Dev dependencies
+
+├── Dockerfile                       # Container spec  Protein_Intake = 80  -d '{
+
+├── cloudbuild.yaml                  # GCP Cloud Build config
+
+├── test_api.py                      # Pytest test cases  Carbohydrate_Intake = 250    "Age": 28,
+
+├── README.md                        # This file
+
+├── Gymbite_API_Collection.postman_collection.json  Fat_Intake = 70    "Gender": "Female",
+
+└── .github/workflows/               # GitHub Actions
+
+    ├── pytest.yml}    "Height_cm": 165.0,
+
+    └── docker-build.yml
+
+```    "Weight_kg": 75.0,
+
+
+
+### DependenciesInvoke-RestMethod -Uri "http://localhost:8000/predict" `    "BMI": 27.5,
+
+
+
+**Production:**  -Method Post `    "Exercise_Frequency": 5,
+
+- fastapi==0.104.1
+
+- uvicorn[standard]==0.24.0  -Body (ConvertTo-Json $payload) `    "Daily_Steps": 10000,
+
+- pydantic==2.4.2
+
+- scikit-learn==1.3.2  -ContentType 'application/json'    "Blood_Pressure_Systolic": 125,
+
+- pandas==2.0.3
+
+- numpy==1.24.3```    "Blood_Pressure_Diastolic": 80,
+
+- joblib==1.3.2
+
+    "Cholesterol_Level": 180,
+
+**Development:**
+
+- pytest==8.0.2#### **Using cURL:**    "Blood_Sugar_Level": 95,
+
+- httpx==0.25.1
+
+```bash    "Sleep_Hours": 7.5,
+
+### Key Files
+
+curl -X POST http://localhost:8000/predict \    "Caloric_Intake": 2200,
+
+#### `app.py` - FastAPI Application
+
+- **Routes:** `/health` (GET), `/predict` (POST)  -H "Content-Type: application/json" \    "Protein_Intake": 80,
+
+- **Features:** Lazy loading, input validation, error handling
+
+- **Lines:** ~136  -d '{    "Carbohydrate_Intake": 250,
+
+
+
+#### `enhanced_diet_model.py` - ML Predictor    "Age": 28,    "Fat_Intake": 70
+
+- **Class:** `EnhancedDietPredictor`
+
+- **Methods:**     "Gender": "Female",  }'
+
+  - `calculate_bmr()` - Basal Metabolic Rate
+
+  - `calculate_tdee()` - Total Daily Energy Expenditure    "Height_cm": 165.0,```
+
+  - `calculate_health_risk_score()` - Health risk assessment
+
+  - `predict()` - Make nutrition predictions    "Weight_kg": 75.0,
+
+- **Lines:** ~160 (production code only)
+
+    "BMI": 27.5,## Example requests with PowerShell
+
+#### `Dockerfile` - Container Spec
+
+- **Base:** python:3.10-slim    "Exercise_Frequency": 5,
+
+- **Port:** 8080 (configurable via PORT env var)
+
+- **Optimized for Cloud Run**    "Daily_Steps": 10000,Windows PowerShell:
+
+
+
+---    "Blood_Pressure_Systolic": 125,
+
+
+
+## 🔧 Troubleshooting    "Blood_Pressure_Diastolic": 80,```powershell
+
+
+
+### Import Error: `enhanced_diet_model not found`    "Cholesterol_Level": 180,$payload = @{
+
+```bash
+
+# Make sure you're in the correct directory    "Blood_Sugar_Level": 95,  Age = 28
+
+ls -la enhanced_diet_model.py
+
+cd /path/to/gymbite_model    "Sleep_Hours": 7.5,  Gender = 'Female'
+
+python app.py
+
+```    "Caloric_Intake": 2200,  Height_cm = 165.0
+
+
+
+### Model File Not Found    "Protein_Intake": 80,  Weight_kg = 75.0
+
+```bash
+
+git lfs install    "Carbohydrate_Intake": 250,  BMI = 27.5
+
+git lfs pull
+
+```    "Fat_Intake": 70  Exercise_Frequency = 5
+
+
+
+### Port Already in Use  }'  Daily_Steps = 10000
+
+```bash
+
+python -m uvicorn app:app --host 127.0.0.1 --port 9000```  Blood_Pressure_Systolic = 125
+
+```
+
+  Blood_Pressure_Diastolic = 80
+
+### Dependencies Missing
+
+```bash#### **Using Python Requests:**  Cholesterol_Level = 180
+
+pip install -r requirements.txt
+
+``````python  Blood_Sugar_Level = 95
+
+
+
+### Cloud Run: Container Failed to Startimport requests  Sleep_Hours = 7.5
+
+- Lazy loading is enabled
+
+- Model loads on first request  Caloric_Intake = 2200
+
+- First `/predict` may take 10-30 seconds (model download)
+
+- Subsequent requests < 100msurl = "http://localhost:8000/predict"  Protein_Intake = 80
+
+
+
+### Prediction Returns 503payload = {  Carbohydrate_Intake = 250
+
+```bash
+
+# Verify GitHub release has model file    "Age": 28,  Fat_Intake = 70
+
+curl -I https://github.com/Nouman13388/gymbite_model/releases/download/v1.0/enhanced_diet_predictor.pkl
+
+```    "Gender": "Female",}
+
+
+
+### Slow Response on First Request    "Height_cm": 165.0,Invoke-RestMethod -Uri http://127.0.0.1:8000/predict `
+
+**Normal behavior** - First request includes model download (125.6 MB):
+
+- First request: 10-30 seconds (model download)    "Weight_kg": 75.0,  -Method Post `
+
+- Subsequent requests: < 100ms
+
+    # ... (rest of fields)  -Body (ConvertTo-Json $payload) `
+
+---
+
+}  -ContentType 'application/json'
+
+## 📊 Model Performance
+
+```
+
+### ML Model Details
+
+response = requests.post(url, json=payload)
+
+| Metric | Details |
+
+|--------|---------|print(response.json())## Health / readiness endpoint
+
+| **Type** | Random Forest (n_estimators=100) |
+
+| **Framework** | scikit-learn MultiOutputRegressor |```
+
+| **Target Variables** | 4 (Calories, Protein, Carbs, Fats) |
+
+| **Input Features** | 16 + 5 calculated (21 total) |GET `/health` returns JSON with these fields:
+
+| **Accuracy** | 85%+ (within 10% tolerance) |
+
+| **Output Validation** | Health-safe bounds applied |---
+
+
+
+### Calculated Features- `status`: "ok" or "degraded"
+
+
+
+- **BMR** - Basal Metabolic Rate (Mifflin-St Jeor equation)## 🧪 Testing- `model_loaded`: boolean
+
+- **TDEE** - Total Daily Energy Expenditure
+
+- **Health Risk Score** - 0-100 risk assessment- `uptime_seconds`: float or null
+
+- **Activity Level Score** - 0-10 activity rating
+
+### Run Local Tests
+
+---
+
+Example healthy response:
+
+## 🚀 Performance
+
+```bash
+
+### Response Times
+
+# Install test dependencies```json
+
+| Scenario | Time |
+
+|----------|------|pip install -r dev-requirements.txt{
+
+| App startup | < 1 second |
+
+| First /predict | 10-30 seconds (model download) |  "status": "ok",
+
+| Subsequent /predict | 50-100ms |
+
+| /health endpoint | < 10ms |# Run all tests with verbose output  "model_loaded": true,
+
+
+
+### Scalabilitypytest test_api.py -v  "uptime_seconds": 123.45
+
+
+
+- **Cloud Run:** Automatic (0-100+ instances)}
+
+- **Free Tier:** 2 million requests/month
+
+- **Concurrent Requests:** Unlimited on paid tier# Run specific test```
+
+
+
+---pytest test_api.py::test_predict_response_format -v
+
+
+
+## 🌐 Alternative PlatformsIf the model failed to load at startup, `status` will be `degraded` and `model_loaded` will be `false`. Use this endpoint for readiness probes.
+
+
+
+While currently on GCP Cloud Run, can deploy to:# Run with coverage
+
+
+
+- **Azure Container Instances**pytest test_api.py --cov=app## 🐳 Docker & Local Deployment
+
+- **AWS Lambda** with API Gateway
+
+- **DigitalOcean App Platform**```
+
+- **Render.com**
+
+- **Railway.app**### Build and Run with Docker
+
+- **Heroku**
+
+### Test Coverage
+
+All require Docker support (provided via `Dockerfile`).
+
+```bash
+
+---
+
+| Test | Purpose | Status |# Build the Docker image
+
+## 📞 Links
+
+|------|---------|--------|docker build -t gymbite_model:local .
+
+- **Repository:** https://github.com/Nouman13388/gymbite_model
+
+- **Live API:** https://gymbite-model-480367101608.europe-west1.run.app| `test_health_endpoint` | Health endpoint returns valid response | ✅ PASSED |
+
+- **Issues:** https://github.com/Nouman13388/gymbite_model/issues
+
+- **Releases:** https://github.com/Nouman13388/gymbite_model/releases| `test_health_endpoint_fields` | Health response has correct field types | ✅ PASSED |# Run the container
+
+
+
+---| `test_predict_endpoint_input_validation` | Predict accepts valid input | ✅ PASSED |docker run --rm -p 8000:8000 -v "$PWD:/app" --name gymbite_local gymbite_model:local
+
+
+
+**Last Updated:** October 25, 2025  | `test_predict_response_format` | Predict returns all required fields | ✅ PASSED |```
+
+**Status:** ✅ Production Ready
 
 | `test_predict_missing_fields` | Predict validates required fields | ✅ PASSED |
 
