@@ -71,6 +71,7 @@ This guide helps developers import and use the Gymbite Nutrition API collection 
    ```
 
 5. **API is now running at:** `http://localhost:8000`
+
    - Health check: `http://localhost:8000/health`
    - Predictions: `http://localhost:8000/predict`
    - Documentation: `http://localhost:8000/docs`
@@ -95,7 +96,11 @@ If you deploy to a cloud platform:
    ```text
    https://gymbite-model-xxxxx-us-central1.a.run.app
    ```
+
    https://your-api-endpoint.com
+
+   ```
+
    ```
 
 **Important Notes:**

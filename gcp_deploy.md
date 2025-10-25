@@ -121,16 +121,16 @@ gcloud run deploy gymbite-model \
 
 **Parameters explanation:**
 
-| Parameter | Value | Purpose |
-|-----------|-------|---------|
-| `deploy` | `gymbite-model` | Service name |
-| `--image` | `gcr.io/...` | Docker image location |
-| `--platform` | `managed` | Managed Cloud Run (recommended) |
-| `--region` | `us-central1` | GCP region (adjust as needed) |
-| `--allow-unauthenticated` | | Make API public (no authentication) |
-| `--memory` | `512Mi` | Memory allocation (512 MB sufficient) |
-| `--timeout` | `3600` | Request timeout in seconds (1 hour) |
-| `--set-env-vars` | `LOG_LEVEL=info` | Environment variables |
+| Parameter                 | Value            | Purpose                               |
+| ------------------------- | ---------------- | ------------------------------------- |
+| `deploy`                  | `gymbite-model`  | Service name                          |
+| `--image`                 | `gcr.io/...`     | Docker image location                 |
+| `--platform`              | `managed`        | Managed Cloud Run (recommended)       |
+| `--region`                | `us-central1`    | GCP region (adjust as needed)         |
+| `--allow-unauthenticated` |                  | Make API public (no authentication)   |
+| `--memory`                | `512Mi`          | Memory allocation (512 MB sufficient) |
+| `--timeout`               | `3600`           | Request timeout in seconds (1 hour)   |
+| `--set-env-vars`          | `LOG_LEVEL=info` | Environment variables                 |
 
 **Common Regions:**
 
@@ -298,11 +298,11 @@ gcloud run services update gymbite-model \
 
 **Example Costs:**
 
-| Scenario | Estimated Cost |
-|----------|---|
-| 1M requests/month, 50GB-seconds | $0 (within free tier) |
-| 5M requests/month, 200GB-seconds | ~$0.50-1.00 |
-| 100M requests/month (production) | ~$10-30 |
+| Scenario                         | Estimated Cost        |
+| -------------------------------- | --------------------- |
+| 1M requests/month, 50GB-seconds  | $0 (within free tier) |
+| 5M requests/month, 200GB-seconds | ~$0.50-1.00           |
+| 100M requests/month (production) | ~$10-30               |
 
 Check GCP pricing: `https://cloud.google.com/run/pricing`
 

@@ -62,11 +62,13 @@ git
    - Docs: `http://localhost:8000/docs` (auto-generated Swagger UI)
 
 ## ✅ Endpoint Testing Results
-  "status": "ok",
-  "model_loaded": true,
-  "uptime_seconds": 2.34
+
+"status": "ok",
+"model_loaded": true,
+"uptime_seconds": 2.34
 }
-```
+
+````
 
 **Status:** ✅ PASSED
 **Response Code:** 200 OK
@@ -94,7 +96,7 @@ git
   "Carbohydrate_Intake": 250,
   "Fat_Intake": 70
 }
-```
+````
 
 **Response:**
 
@@ -287,6 +289,7 @@ ls -lh enhanced_diet_predictor.pkl
 Deploy to Google Cloud Run (free tier: 2 million requests/month):
 
 1. **Install Google Cloud SDK:**
+
    ```bash
    # Download from: https://cloud.google.com/sdk/docs/install
    gcloud init
@@ -294,11 +297,13 @@ Deploy to Google Cloud Run (free tier: 2 million requests/month):
    ```
 
 2. **Set your GCP project:**
+
    ```bash
    gcloud config set project YOUR_PROJECT_ID
    ```
 
 3. **Deploy to Cloud Run:**
+
    ```bash
    gcloud run deploy gymbite-model \
      --source . \
