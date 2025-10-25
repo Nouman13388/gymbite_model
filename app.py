@@ -54,18 +54,11 @@ def create_app() -> FastAPI:
 
     @app.on_event("startup")
     def startup() -> None:
-        """Minimal startup - just mark the app as starting."""
+        """Minimal startup - don't load model, just initialize state."""
         app.state.start_time = time.time()
         app.state.model_loaded = False
         app.state.predictor = None
-        logger.info("✅ FastAPI app started on port 8080")
-        
-        # Check if model file exists, if not, try to download it from GitHub
-        if not os.path.exists("enhanced_diet_predictor.pkl"):
-            logger.warning("⚠️  Model file not found locally. It will be downloaded on first request.")
-            app.state.model_missing = True
-        else:
-            logger.info("✅ Model file found at startup")
+        logger.info("✅ FastAPI app started successfully - model will load on first /predict request")
 
     def load_model_lazy() -> None:
         """Load model on first request if not already loaded."""
