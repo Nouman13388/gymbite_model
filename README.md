@@ -1,4 +1,14 @@
-﻿# Gymbite - ML Nutrition Recommendation System
+﻿---
+title: Gymbite Nutrition Model
+emoji: 🥗
+colorFrom: orange
+colorTo: green
+sdk: docker
+app_file: app.py
+pinned: false
+---
+
+# Gymbite - ML Nutrition Recommendation System
 
 Gymbite exposes a small FastAPI service that loads a trained scikit-learn model and serves personalized nutrition recommendations via POST `/predict`.
 
@@ -210,6 +220,7 @@ Your app is already deployed to Hugging Face Spaces. To redeploy or deploy to a 
 4. Hugging Face will automatically build and deploy your Dockerfile
 
 **Advantages:**
+
 - Free tier with GPU support
 - Automatic Docker builds on push
 - Git LFS support included
