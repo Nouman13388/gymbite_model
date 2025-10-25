@@ -225,13 +225,13 @@
     "variable": [
         {
             "key": "base_url",
-            "value": "http://localhost:8000",
+            "value": "https://gymbite-model-480367101608.europe-west1.run.app",
             "type": "string",
-            "description": "API Base URL. For local development use: http://localhost:8000. For production deployment, update this to your API endpoint."
+            "description": "API Base URL. Production Cloud Run deployment: https://gymbite-model-480367101608.europe-west1.run.app. For local development, change to http://localhost:8000"
         },
         {
             "key": "deployment_notes",
-            "value": "LOCAL TESTING: Run 'python app.py' or 'uvicorn app:app --port 8000' locally. CLOUD DEPLOYMENT: Update base_url variable to your deployed endpoint (e.g., HF Inference Endpoint or other API service).",
+            "value": "PRODUCTION: Using Google Cloud Run deployment at https://gymbite-model-480367101608.europe-west1.run.app. For local testing, change base_url to http://localhost:8000 and run 'uvicorn app:app --port 8000' locally.",
             "type": "string"
         }
     ]
