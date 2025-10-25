@@ -1,26 +1,26 @@
 steps:
   # 1. Install git-lfs (git is already available)
-  - name: 'gcr.io/cloud-builders/git'
-    entrypoint: 'bash'
+  - name: "gcr.io/cloud-builders/git"
+    entrypoint: "bash"
     args:
-      - '-c'
-      - 'apt-get update -y && apt-get install -y git-lfs'
+      - "-c"
+      - "apt-get update -y && apt-get install -y git-lfs"
 
   # 2. Configure git and pull LFS files
-  - name: 'gcr.io/cloud-builders/git'
-    entrypoint: 'bash'
+  - name: "gcr.io/cloud-builders/git"
+    entrypoint: "bash"
     args:
-      - '-c'
-      - 'git lfs install && git lfs pull'
+      - "-c"
+      - "git lfs install && git lfs pull"
 
   # 3. Build the Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA', '.']
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA", "."]
 
   # 4. Push the image to Container Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA']
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA"]
 
 # Tell Cloud Run to deploy the newly pushed image
 images:
-  - 'gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA'
+  - "gcr.io/$PROJECT_ID/gymbite-ml-api:$COMMIT_SHA"
