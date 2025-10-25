@@ -34,37 +34,49 @@ class Input(BaseModel):
 
 
 def download_model_if_missing(model_path: str = "enhanced_diet_predictor.pkl") -> None:
-    """Download model from GitHub releases if not present locally.
+    """Download model from GitHub if not present locally.
     
     This ensures the model is available even in cloud deployments (Railway, etc)
     where Git LFS files may not be automatically downloaded.
     """
     if os.path.exists(model_path):
-        logger.info(f"✅ Model found at {model_path}")
+        file_size = os.path.getsize(model_path) / (1024 * 1024)  # Size in MB
+        logger.info(f"✅ Model found at {model_path} ({file_size:.2f} MB)")
         return
     
-    logger.info(f"📥 Model not found. Attempting to download from GitHub...")
+    logger.info(f"📥 Model not found locally ({model_path}). Attempting to download from GitHub...")
     
     try:
-        # GitHub raw content URL for the model file
-        # Update this URL based on your GitHub releases or raw file location
-        github_url = "https://github.com/Nouman13388/gymbite_model/releases/download/model-v1/enhanced_diet_predictor.pkl"
+        # Download from raw GitHub content (requires LFS support)
+        # For Railway: the model should be included, but if LFS files aren't pulled:
+        github_urls = [
+            "https://github.com/Nouman13388/gymbite_model/raw/main/enhanced_diet_predictor.pkl",
+        ]
         
-        logger.info(f"Downloading from: {github_url}")
-        response = requests.get(github_url, timeout=30)
-        response.raise_for_status()
+        for github_url in github_urls:
+            try:
+                logger.info(f"Trying: {github_url}")
+                response = requests.get(github_url, timeout=60, stream=True)
+                response.raise_for_status()
+                
+                # Save the downloaded model
+                with open(model_path, "wb") as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+                
+                file_size = os.path.getsize(model_path) / (1024 * 1024)
+                logger.info(f"✅ Model successfully downloaded ({file_size:.2f} MB)")
+                return
+                
+            except Exception as e:
+                logger.warning(f"Failed with {github_url}: {e}")
+                continue
         
-        # Save the downloaded model
-        with open(model_path, "wb") as f:
-            f.write(response.content)
+        logger.error("❌ Could not download model from any source")
         
-        logger.info(f"✅ Model successfully downloaded and saved to {model_path}")
-        
-    except requests.exceptions.RequestException as e:
-        logger.error(f"❌ Failed to download model from GitHub: {e}")
-        logger.error("Model will be loaded from local path if available")
     except Exception as e:
-        logger.error(f"❌ Error saving downloaded model: {e}")
+        logger.error(f"❌ Error in download_model_if_missing: {e}")
 
 
 def create_app() -> FastAPI:
