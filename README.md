@@ -1200,6 +1200,82 @@ curl -X POST https://gymbite-model-480367101608.europe-west1.run.app/predict \
 
 ---
 
+## 💰 Cost Management
+
+### Automatic Image Cleanup
+
+**Problem:** Each deployment creates a new Docker image in GCP Artifact Registry. Without cleanup, these accumulate and cost ~$0.10/GB/month.
+
+**Solution:** Automated cleanup system that keeps only the 2 most recent images.
+
+#### Option 1: Automated GitHub Actions (Recommended)
+
+**Setup once, runs automatically:**
+
+1. **Create GCP Service Account:**
+
+   ```bash
+   # Create service account
+   gcloud iam service-accounts create github-actions-cleanup \
+     --display-name="GitHub Actions Image Cleanup"
+
+   # Grant permissions
+   gcloud projects add-iam-policy-binding gymbite \
+     --member="serviceAccount:github-actions-cleanup@gymbite.iam.gserviceaccount.com" \
+     --role="roles/artifactregistry.admin"
+
+   # Create key
+   gcloud iam service-accounts keys create gcp-key.json \
+     --iam-account=github-actions-cleanup@gymbite.iam.gserviceaccount.com
+   ```
+
+2. **Add GitHub Secret:**
+
+   - Go to repository Settings → Secrets → Actions
+   - Create secret: `GCP_SA_KEY`
+   - Paste entire `gcp-key.json` content
+   - **Delete local key file:** `rm gcp-key.json`
+
+3. **Push workflow file:**
+   ```bash
+   git add .github/workflows/cleanup-images.yml
+   git commit -m "Add automatic image cleanup"
+   git push
+   ```
+
+**Runs automatically every Sunday at 2 AM UTC** or manually via GitHub Actions tab.
+
+#### Option 2: Manual Cleanup Script
+
+Run anytime from your local machine:
+
+```powershell
+.\cleanup-images.ps1
+```
+
+The script will:
+
+- List all current images
+- Show how many will be deleted
+- Ask for confirmation
+- Keep 2 most recent, delete the rest
+
+#### Cost Impact
+
+| Scenario                | Storage | Monthly Cost    |
+| ----------------------- | ------- | --------------- |
+| No cleanup (40 images)  | ~2 GB   | $0.20           |
+| With cleanup (2 images) | ~100 MB | $0.01-0.02      |
+| **Savings**             | **95%** | **$0.18/month** |
+
+**Files:**
+
+- `.github/workflows/cleanup-images.yml` - Automated GitHub Actions workflow
+- `cleanup-images.ps1` - Manual PowerShell cleanup script
+- `CLEANUP_SETUP.md` - Detailed setup instructions
+
+---
+
 ## 💻 Local Development
 
 ### Setup Development Environment

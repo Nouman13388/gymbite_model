@@ -1,0 +1,54 @@
+name: Cleanup Old Docker Images
+
+on:
+  schedule:
+    # Run every Sunday at 2 AM UTC
+    - cron: "0 2 * * 0"
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Cleanup old images
+        run: |
+          # Get all images sorted by creation time (newest first)
+          images=$(gcloud artifacts docker images list \
+            europe-west1-docker.pkg.dev/gymbite/cloud-run-source-deploy \
+            --include-tags \
+            --format="value(DIGEST)" \
+            --sort-by=~CREATE_TIME)
+
+          # Count total images
+          total=$(echo "$images" | wc -l)
+          echo "Found $total images"
+
+          # Keep only the 2 most recent images, delete the rest
+          if [ "$total" -gt 2 ]; then
+            echo "$images" | tail -n +3 | while read digest; do
+              echo "Deleting: $digest"
+              gcloud artifacts docker images delete \
+                "europe-west1-docker.pkg.dev/gymbite/cloud-run-source-deploy/gymbite_model/gymbite-model@$digest" \
+                --quiet --async || true
+            done
+            echo "Cleanup completed. Kept 2 most recent images, deleted $(($total - 2)) old images."
+          else
+            echo "Only $total images found. No cleanup needed (keeping minimum 2)."
+          fi
+
+      - name: Show remaining images
+        run: |
+          echo "Remaining images:"
+          gcloud artifacts docker images list \
+            europe-west1-docker.pkg.dev/gymbite/cloud-run-source-deploy \
+            --include-tags \
+            --format="table(IMAGE,CREATE_TIME)" \
+            --sort-by=~CREATE_TIME
