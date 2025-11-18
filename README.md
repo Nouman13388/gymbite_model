@@ -1,22 +1,12 @@
 ﻿# Gymbite - ML Nutrition Recommendation System# Gymbite - ML Nutrition Recommendation System# Gymbite - ML Nutrition Recommendation System
 
-
-
 > A production-ready FastAPI-based nutrition recommendation system powered by scikit-learn ML model. Get personalized nutrition guidance based on comprehensive health metrics.
-
-
 
 **Current Deployment Status:** 🚀 **Live** at https://gymbite-model-480367101608.europe-west1.run.app> A production-ready FastAPI-based nutrition recommendation system powered by scikit-learn ML model. Get personalized nutrition guidance based on comprehensive health metrics.Gymbite is a FastAPI-based nutrition recommendation system powered by a trained scikit-learn model. It provides personalized nutrition recommendations based on user health metrics.
 
-
-
 ---
 
-
-
-## 📋 Table of Contents**Current Deployment Status:** 🚀 **Live** at https://gymbite-model-480367101608.europe-west1.run.app**Key Features:**
-
-
+## 📋 Table of Contents**Current Deployment Status:** 🚀 **Live** at https://gymbite-model-480367101608.europe-west1.run.app**Key Features:\*\*
 
 - [Features](#-features)
 
@@ -60,19 +50,11 @@
 
 - 🌐 **Production Ready** - Health checks, error handling, input validation- [Cloud Deployment](#-cloud-deployment)User Request → FastAPI Endpoint → scikit-learn Model → JSON Response
 
-
-
 ---- [Local Development](#-local-development)```
-
-
 
 ## ⚡ Quick Start- [Troubleshooting](#-troubleshooting)
 
-
-
 ### 30-Second Local Setup- [Project Structure](#-project-structure)- **Input:** 16 health/lifestyle parameters
-
-
 
 ```bash- **Output:** 8 nutrition recommendations
 
@@ -120,17 +102,11 @@ python app.py- ⚡ **Fast API** - Sub-100ms response time with FastAPI framework
 
 - **Predictions:** http://localhost:8000/predict (POST)- 📡 **GitHub Releases** - Automatic model download from GitHub releases (solves Git LFS issue)git
 
-
-
 ---- 🌐 **Production Ready** - Health checks, error handling, input validation```
-
-
 
 ## 🏗️ Architecture
 
-
-
-```---### Installation
+`````---### Installation
 
 ┌─────────────────┐
 
@@ -456,7 +432,7 @@ pytest test_api.py -v
 
 pytest test_api.py::test_predict_response_format -v- `"ok"` - Model loaded and ready
 
-```
+`````
 
 - `"degraded"` - App running but model not yet loaded (will load on first /predict)**Status:** ✅ PASSED
 
@@ -478,15 +454,11 @@ pytest test_api.py::test_predict_response_format -v- `"ok"` - Model loaded and r
 
 | `test_predict_missing_fields` | Predict validates required fields | ✅ PASSED |
 
-
-
 **Test Results:** `5 passed in 3.52s` ✅
 
 ### 2. POST `/predict` - Get Nutrition Recommendations1. Create and activate a virtual environment (PowerShell):
 
 ### GitHub Actions CI/CD
-
-
 
 The project includes pytest workflow that runs on every push:
 
@@ -502,7 +474,7 @@ The project includes pytest workflow that runs on every push:
 
 ---
 
-```json```
+`json`
 
 ## ☁️ Cloud Deployment
 
@@ -510,31 +482,27 @@ The project includes pytest workflow that runs on every push:
 
 ### Google Cloud Run
 
-  "Age": 28,1. Install dependencies:
+"Age": 28,1. Install dependencies:
 
 **Live URL:** https://gymbite-model-480367101608.europe-west1.run.app
 
-  "Gender": "Female",
+"Gender": "Female",
 
 #### How It Works
 
-  "Height_cm": 165.0,```powershell
+"Height_cm": 165.0,```powershell
 
 **Lazy Loading Strategy:**
 
-- App starts in < 1 second (model NOT loaded)  "Weight_kg": 75.0,pip install -r requirements.txt
+- App starts in < 1 second (model NOT loaded) "Weight_kg": 75.0,pip install -r requirements.txt
 
 - Model automatically downloads on first `/predict` request from GitHub releases
 
-- Model cached in memory for subsequent requests (< 100ms)  "BMI": 27.5,pip install -r dev-requirements.txt  # optional: pytest, httpx
+- Model cached in memory for subsequent requests (< 100ms) "BMI": 27.5,pip install -r dev-requirements.txt # optional: pytest, httpx
 
+#### Model Download Flow "Exercise_Frequency": 5,```
 
-
-#### Model Download Flow  "Exercise_Frequency": 5,```
-
-
-
-```  "Daily_Steps": 10000,
+```````"Daily_Steps": 10000,
 
 App Startup
 
@@ -616,19 +584,19 @@ Subsequent Requests  "Caloric_Intake": 2200,
 
      --allow-unauthenticated  "bmr": 1480,  "Blood_Pressure_Systolic": 125,
 
-   ```
+```````
 
-  "tdee": 2368,  "Blood_Pressure_Diastolic": 80,
+"tdee": 2368, "Blood_Pressure_Diastolic": 80,
 
 3. **Verify Deployment**
 
-   ```bash  "health_risk_score": 25,  "Cholesterol_Level": 180,
+   ````bash "health_risk_score": 25,  "Cholesterol_Level": 180,
 
    # Check health
 
    curl https://gymbite-model-480367101608.europe-west1.run.app/health  "activity_level_score": 6.9  "Blood_Sugar_Level": 95,
 
-   
+
 
    # Make prediction}  "Sleep_Hours": 7.5,
 
@@ -639,14 +607,11 @@ Subsequent Requests  "Caloric_Intake": 2200,
      -d '{...}'
 
    ```  "Protein_Intake": 80,
+   ````
 
+#### Troubleshooting**Error Responses:** "Carbohydrate_Intake": 250,
 
-
-#### Troubleshooting**Error Responses:**  "Carbohydrate_Intake": 250,
-
-
-
-| Issue | Cause | Solution |- `422 Unprocessable Entity` - Missing/invalid input fields  "Fat_Intake": 70
+| Issue | Cause | Solution |- `422 Unprocessable Entity` - Missing/invalid input fields "Fat_Intake": 70
 
 |-------|-------|----------|
 
@@ -658,21 +623,17 @@ Subsequent Requests  "Caloric_Intake": 2200,
 
 | 404 Not Found | Route doesn't exist | Check routes in `app.py` |
 
-
-
 ---
 
 ---Successful response (abridged):
 
 ## 💻 Local Development
 
-
-
 ### Setup
 
 ### 📝 Request Examples```json
 
-```bash
+````bash
 
 # 1. Clone repository{
 
@@ -720,15 +681,15 @@ git lfs pull
 
 python app.py  Blood_Pressure_Systolic = 125
 
-```
+````
 
-  Blood_Pressure_Diastolic = 80Linux/macOS or Windows with curl installed:
+Blood_Pressure_Diastolic = 80Linux/macOS or Windows with curl installed:
 
 ### Project Structure
 
-  Cholesterol_Level = 180
+Cholesterol_Level = 180
 
-```
+````
 
 gymbite_model/  Blood_Sugar_Level = 95```bash
 
@@ -876,13 +837,13 @@ git lfs pull
 
 python -m uvicorn app:app --host 127.0.0.1 --port 9000```  Blood_Pressure_Systolic = 125
 
-```
+````
 
-  Blood_Pressure_Diastolic = 80
+Blood_Pressure_Diastolic = 80
 
 ### Dependencies Missing
 
-```bash#### **Using Python Requests:**  Cholesterol_Level = 180
+```````bash#### **Using Python Requests:**  Cholesterol_Level = 180
 
 pip install -r requirements.txt
 
@@ -930,7 +891,7 @@ curl -I https://github.com/Nouman13388/gymbite_model/releases/download/v1.0/enha
 
 ## 📊 Model Performance
 
-```
+```````
 
 ### ML Model Details
 
@@ -952,11 +913,7 @@ response = requests.post(url, json=payload)
 
 | **Output Validation** | Health-safe bounds applied |---
 
-
-
 ### Calculated Features- `status`: "ok" or "degraded"
-
-
 
 - **BMR** - Basal Metabolic Rate (Mifflin-St Jeor equation)## 🧪 Testing- `model_loaded`: boolean
 
@@ -974,7 +931,7 @@ Example healthy response:
 
 ## 🚀 Performance
 
-```bash
+````bash
 
 ### Response Times
 
@@ -1128,7 +1085,7 @@ ls -lh enhanced_diet_predictor.pkl
 
    └─ Ready to receive requests (model NOT loaded)- This avoids startup timeout issues in Cloud Run
 
-   
+
 
    First /predict Request#### Git LFS Model File Handling
 
@@ -1170,76 +1127,76 @@ ls -lh enhanced_diet_predictor.pkl
 
 1. **Create GitHub Release with Model**Create a `.env.example` file for reference:
 
-   ```
+````
 
-   1. Go to: https://github.com/Nouman13388/gymbite_model/releases```bash
+1.  Go to: https://github.com/Nouman13388/gymbite_model/releases```bash
 
-   2. Click "Create a new release"PORT=8000
+2.  Click "Create a new release"PORT=8000
 
-   3. Tag: v1.0HOST=0.0.0.0
+3.  Tag: v1.0HOST=0.0.0.0
 
-   4. Upload: enhanced_diet_predictor.pkl (125.6 MB)LOG_LEVEL=info
+4.  Upload: enhanced_diet_predictor.pkl (125.6 MB)LOG_LEVEL=info
 
-   5. Publish```
+5.  Publish```
 
-   ```
+````
 
 ## 🔧 Troubleshooting
 
 2. **Deploy to Cloud Run**
 
-   ```bash- **Model not found:** Run `git lfs pull` to download the model file from Git LFS
+```bash- **Model not found:** Run `git lfs pull` to download the model file from Git LFS
 
-   # Option A: From GCP Console- **Import errors:** Install dependencies with `pip install -r requirements.txt`
+# Option A: From GCP Console- **Import errors:** Install dependencies with `pip install -r requirements.txt`
 
-   - Go to Cloud Run service- **Port already in use:** Change port with `--port 9000` in uvicorn command
+- Go to Cloud Run service- **Port already in use:** Change port with `--port 9000` in uvicorn command
 
-   - Click "Edit & deploy new revision"- **Cloud Run startup timeout:** App now uses lazy loading - model loads on first /predict request, not on startup
+- Click "Edit & deploy new revision"- **Cloud Run startup timeout:** App now uses lazy loading - model loads on first /predict request, not on startup
 
-   - Click "Deploy"
+- Click "Deploy"
 
-   ## ✅ Testing
+## ✅ Testing
 
-   # Option B: Using gcloud CLI
+# Option B: Using gcloud CLI
 
-   gcloud run deploy gymbite-model \Run the test suite locally:
+gcloud run deploy gymbite-model \Run the test suite locally:
 
-     --source . \
+  --source . \
 
-     --platform managed \```bash
+  --platform managed \```bash
 
-     --memory 2Gi \pytest test_api.py -v
+  --memory 2Gi \pytest test_api.py -v
 
-     --region europe-west1 \```
+  --region europe-west1 \```
 
-     --allow-unauthenticated
+  --allow-unauthenticated
 
-   ```Tests cover:
+```Tests cover:
 
 
 
 3. **Verify Deployment**- Health endpoint availability and response format
 
-   ```bash- Predict endpoint input validation
+```bash- Predict endpoint input validation
 
-   # Check health- Prediction response format and field types
+# Check health- Prediction response format and field types
 
-   curl https://gymbite-model-480367101608.europe-west1.run.app/health- Missing field validation
-   
-   # Make prediction (triggers model download)
-   curl -X POST https://gymbite-model-480367101608.europe-west1.run.app/predict \
-     -H "Content-Type: application/json" \
-     -d '{...}'
-   ```
+curl https://gymbite-model-480367101608.europe-west1.run.app/health- Missing field validation
+
+# Make prediction (triggers model download)
+curl -X POST https://gymbite-model-480367101608.europe-west1.run.app/predict \
+  -H "Content-Type: application/json" \
+  -d '{...}'
+````
 
 #### Troubleshooting Deployment Issues
 
-| Issue | Cause | Solution |
-|-------|-------|----------|
-| Container failed to start | Model not downloading | Check GitHub release exists with model file |
-| Startup timeout | Model too slow to load | Lazy loading is enabled - model loads on first request |
-| 503 Service Unavailable | Model download failed | Verify GitHub release URL is accessible |
-| 404 Not Found | Route doesn't exist | Check FastAPI routes in `app.py` |
+| Issue                     | Cause                  | Solution                                               |
+| ------------------------- | ---------------------- | ------------------------------------------------------ |
+| Container failed to start | Model not downloading  | Check GitHub release exists with model file            |
+| Startup timeout           | Model too slow to load | Lazy loading is enabled - model loads on first request |
+| 503 Service Unavailable   | Model download failed  | Verify GitHub release URL is accessible                |
+| 404 Not Found             | Route doesn't exist    | Check FastAPI routes in `app.py`                       |
 
 ---
 
@@ -1295,6 +1252,7 @@ gymbite_model/
 ### Dependencies
 
 **Production (`requirements.txt`):**
+
 - fastapi==0.104.1
 - uvicorn[standard]==0.24.0
 - pydantic==2.4.2
@@ -1304,6 +1262,7 @@ gymbite_model/
 - joblib==1.3.2
 
 **Development (`dev-requirements.txt`):**
+
 - pytest==8.0.2
 - httpx==0.25.1
 
@@ -1323,15 +1282,17 @@ mypy app.py
 ### Key Files Explained
 
 #### `app.py` - FastAPI Application
+
 - **Purpose:** Main API server
 - **Routes:** `/health` (GET), `/predict` (POST)
 - **Features:** Lazy loading, input validation, error handling
 - **Lines:** ~136
 
 #### `enhanced_diet_model.py` - ML Model Predictor
+
 - **Purpose:** ML inference logic
 - **Class:** `EnhancedDietPredictor`
-- **Methods:** 
+- **Methods:**
   - `calculate_bmr()` - Basal Metabolic Rate
   - `calculate_tdee()` - Total Daily Energy Expenditure
   - `calculate_health_risk_score()` - Health risk assessment
@@ -1340,6 +1301,7 @@ mypy app.py
 - **Lines:** ~160 (production code only)
 
 #### `Dockerfile` - Container Spec
+
 - **Base Image:** python:3.10-slim
 - **Exposed Port:** 8080 (configurable via PORT env var)
 - **Build:** Multi-stage optimized for Cloud Run
@@ -1352,10 +1314,13 @@ mypy app.py
 ### Common Issues and Solutions
 
 #### 1. **Import Error: `enhanced_diet_model not found`**
+
 ```
 Error: ModuleNotFoundError: No module named 'enhanced_diet_model'
 ```
+
 **Solution:** Make sure you're in the correct directory and `enhanced_diet_model.py` exists
+
 ```bash
 ls -la enhanced_diet_model.py
 cd /path/to/gymbite_model
@@ -1363,10 +1328,13 @@ python app.py
 ```
 
 #### 2. **Model File Not Found**
+
 ```
 Error: FileNotFoundError: enhanced_diet_predictor.pkl not found
 ```
+
 **Solution:** Pull the model file using Git LFS
+
 ```bash
 git lfs install
 git lfs pull
@@ -1374,43 +1342,56 @@ git lfs pull
 ```
 
 #### 3. **Port Already in Use**
+
 ```
 Error: Address already in use: ('127.0.0.1', 8000)
 ```
+
 **Solution:** Use a different port
+
 ```bash
 python -m uvicorn app:app --host 127.0.0.1 --port 9000
 ```
 
 #### 4. **Dependencies Missing**
+
 ```
 Error: ModuleNotFoundError: No module named 'fastapi'
 ```
+
 **Solution:** Install requirements
+
 ```bash
 pip install -r requirements.txt
 ```
 
 #### 5. **Cloud Run: Container Failed to Start**
+
 **Solution:** Lazy loading is already implemented. Model loads on first request:
+
 - App starts in <1 second
 - First `/predict` request triggers model download
 - Subsequent requests use cached model
 
 #### 6. **Prediction Returns 503**
+
 ```json
 {
   "detail": "Model download failed"
 }
 ```
+
 **Solution:** Verify GitHub release exists with model file
+
 ```bash
 # Check if release has the model
 curl -I https://github.com/Nouman13388/gymbite_model/releases/download/v1.0/enhanced_diet_predictor.pkl
 ```
 
 #### 7. **Slow Response on First Request**
+
 **Normal behavior:** First request is slow because model is downloading (125.6 MB)
+
 - First request: 10-30 seconds (model download)
 - Subsequent requests: < 100ms (cached model)
 
@@ -1422,17 +1403,18 @@ curl -I https://github.com/Nouman13388/gymbite_model/releases/download/v1.0/enha
 
 The model uses scikit-learn Random Forest with MultiOutputRegressor:
 
-| Metric | Details |
-|--------|---------|
-| **Model Type** | Random Forest (n_estimators=100) |
-| **Target Variables** | 4 (Calories, Protein, Carbs, Fats) |
-| **Input Features** | 16 + 5 calculated (21 total) |
-| **Prediction Accuracy** | 85%+ (within 10% tolerance) |
-| **Output Validation** | Health-safe bounds applied |
+| Metric                  | Details                            |
+| ----------------------- | ---------------------------------- |
+| **Model Type**          | Random Forest (n_estimators=100)   |
+| **Target Variables**    | 4 (Calories, Protein, Carbs, Fats) |
+| **Input Features**      | 16 + 5 calculated (21 total)       |
+| **Prediction Accuracy** | 85%+ (within 10% tolerance)        |
+| **Output Validation**   | Health-safe bounds applied         |
 
 ### Calculated Features
 
 The model automatically calculates:
+
 - **BMR** - Basal Metabolic Rate (Mifflin-St Jeor equation)
 - **TDEE** - Total Daily Energy Expenditure
 - **Health Risk Score** - 0-100 risk assessment
@@ -1459,12 +1441,12 @@ All require Docker support (provided via `Dockerfile`).
 
 ### Response Times (Benchmarked)
 
-| Scenario | Time |
-|----------|------|
-| App startup | < 1 second |
+| Scenario                        | Time          |
+| ------------------------------- | ------------- |
+| App startup                     | < 1 second    |
 | First /predict (model download) | 10-30 seconds |
-| Subsequent /predict (cached) | 50-100ms |
-| /health endpoint | < 10ms |
+| Subsequent /predict (cached)    | 50-100ms      |
+| /health endpoint                | < 10ms        |
 
 ### Scalability
 

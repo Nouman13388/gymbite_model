@@ -48,7 +48,7 @@
                                     }
                                 ],
                                 "url": {
-                                    "raw": "https://huggingface.co/spaces/Nouman1338/gymbite-model/health",
+                                    "raw": "{{base_url}}/health",
                                     "protocol": "https",
                                     "host": [
                                         "huggingface.co"
@@ -134,7 +134,7 @@
                                     "raw": "{\n  \"Age\": 28,\n  \"Gender\": \"Female\",\n  \"Height_cm\": 165.0,\n  \"Weight_kg\": 75.0,\n  \"BMI\": 27.5,\n  \"Exercise_Frequency\": 5,\n  \"Daily_Steps\": 10000,\n  \"Blood_Pressure_Systolic\": 125,\n  \"Blood_Pressure_Diastolic\": 80,\n  \"Cholesterol_Level\": 180,\n  \"Blood_Sugar_Level\": 95,\n  \"Sleep_Hours\": 7.5,\n  \"Caloric_Intake\": 2200,\n  \"Protein_Intake\": 80,\n  \"Carbohydrate_Intake\": 250,\n  \"Fat_Intake\": 70\n}\n"
                                 },
                                 "url": {
-                                    "raw": "https://huggingface.co/spaces/Nouman1338/gymbite-model/predict",
+                                    "raw": "{{base_url}}/predict",
                                     "protocol": "https",
                                     "host": [
                                         "huggingface.co"
