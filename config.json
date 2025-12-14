@@ -1,0 +1,269 @@
+{
+    "model": {
+        "download_url_template": "https://github.com/{owner}/{repo}/releases/download/{version}/{filename}",
+        "default_filename": "enhanced_diet_predictor.pkl",
+        "default_version": "v1.0",
+        "default_owner": "Nouman13388",
+        "default_repo": "gymbite_model"
+    },
+    "gemini": {
+        "default_model": "gemini-3-pro-preview",
+        "fallback_models": [
+            "gemini-2.5-pro",
+            "gemini-2.5-flash",
+            "gemini-2.5-flash-lite"
+        ]
+    },
+    "nutrition": {
+        "activity_multipliers": {
+            "very_active": {
+                "min_exercise_days": 6,
+                "multiplier": 1.725
+            },
+            "moderately_active": {
+                "min_exercise_days": 4,
+                "multiplier": 1.55
+            },
+            "lightly_active": {
+                "min_exercise_days": 2,
+                "multiplier": 1.375
+            },
+            "sedentary": {
+                "min_exercise_days": 0,
+                "multiplier": 1.2
+            }
+        },
+        "step_bonus": {
+            "high_steps": {
+                "threshold": 12000,
+                "bonus": 0.1
+            },
+            "medium_steps": {
+                "threshold": 8000,
+                "bonus": 0.05
+            }
+        },
+        "goal_adjustments": {
+            "weight_loss": {
+                "aggressive": -750,
+                "moderate": -500,
+                "conservative": -300
+            },
+            "muscle_gain": {
+                "aggressive": 600,
+                "moderate": 400,
+                "conservative": 250
+            },
+            "cutting": {
+                "aggressive": -600,
+                "moderate": -400,
+                "conservative": -250
+            },
+            "bulking": {
+                "aggressive": 600,
+                "moderate": 450,
+                "conservative": 300
+            },
+            "athletic": {
+                "aggressive": 200,
+                "moderate": 100,
+                "conservative": 50
+            },
+            "maintenance": {
+                "aggressive": 0,
+                "moderate": 0,
+                "conservative": 0
+            }
+        },
+        "macro_ratios": {
+            "weight_loss": {
+                "protein_percent": 35,
+                "carbs_percent": 35,
+                "fats_percent": 30
+            },
+            "muscle_gain": {
+                "protein_percent": 30,
+                "carbs_percent": 45,
+                "fats_percent": 25
+            },
+            "cutting": {
+                "protein_percent": 40,
+                "carbs_percent": 30,
+                "fats_percent": 30
+            },
+            "bulking": {
+                "protein_percent": 25,
+                "carbs_percent": 50,
+                "fats_percent": 25
+            },
+            "athletic": {
+                "protein_percent": 30,
+                "carbs_percent": 45,
+                "fats_percent": 25
+            },
+            "maintenance": {
+                "protein_percent": 25,
+                "carbs_percent": 45,
+                "fats_percent": 30
+            }
+        },
+        "dietary_adjustments": {
+            "vegan": {
+                "protein_adjustment": -5,
+                "carbs_adjustment": 5
+            },
+            "vegetarian": {
+                "protein_adjustment": -5,
+                "carbs_adjustment": 5
+            },
+            "keto": {
+                "protein_percent": 25,
+                "carbs_percent": 5,
+                "fats_percent": 70
+            }
+        },
+        "safety_bounds": {
+            "min_calorie_multiplier": 0.8,
+            "max_calorie_multiplier": 2.0,
+            "min_protein_per_kg": 0.8,
+            "max_protein_per_kg": 2.5,
+            "macro_tolerance": 1.1
+        },
+        "meal_distributions": {
+            "2_meals": {
+                "meal_names": [
+                    "Breakfast",
+                    "Dinner"
+                ],
+                "front_loaded": [
+                    60,
+                    40
+                ],
+                "back_loaded": [
+                    40,
+                    60
+                ],
+                "balanced": [
+                    50,
+                    50
+                ]
+            },
+            "3_meals": {
+                "meal_names": [
+                    "Breakfast",
+                    "Lunch",
+                    "Dinner"
+                ],
+                "front_loaded": [
+                    40,
+                    35,
+                    25
+                ],
+                "back_loaded": [
+                    25,
+                    35,
+                    40
+                ],
+                "balanced": [
+                    33,
+                    34,
+                    33
+                ]
+            },
+            "4_meals": {
+                "meal_names": [
+                    "Breakfast",
+                    "Lunch",
+                    "Snack",
+                    "Dinner"
+                ],
+                "front_loaded": [
+                    35,
+                    30,
+                    15,
+                    20
+                ],
+                "back_loaded": [
+                    20,
+                    25,
+                    15,
+                    40
+                ],
+                "balanced": [
+                    28,
+                    28,
+                    14,
+                    30
+                ]
+            },
+            "5_meals": {
+                "meal_names": [
+                    "Breakfast",
+                    "Mid-Morning Snack",
+                    "Lunch",
+                    "Afternoon Snack",
+                    "Dinner"
+                ],
+                "front_loaded": [
+                    30,
+                    15,
+                    25,
+                    10,
+                    20
+                ],
+                "back_loaded": [
+                    20,
+                    10,
+                    20,
+                    15,
+                    35
+                ],
+                "balanced": [
+                    25,
+                    12,
+                    26,
+                    12,
+                    25
+                ]
+            },
+            "6_meals": {
+                "meal_names": [
+                    "Breakfast",
+                    "Mid-Morning",
+                    "Lunch",
+                    "Afternoon",
+                    "Dinner",
+                    "Evening"
+                ],
+                "front_loaded": [
+                    25,
+                    15,
+                    20,
+                    10,
+                    20,
+                    10
+                ],
+                "back_loaded": [
+                    15,
+                    10,
+                    20,
+                    10,
+                    30,
+                    15
+                ],
+                "balanced": [
+                    20,
+                    15,
+                    20,
+                    15,
+                    20,
+                    10
+                ]
+            }
+        }
+    },
+    "server": {
+        "default_host": "0.0.0.0",
+        "default_port": 8000
+    }
+}

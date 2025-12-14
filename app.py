@@ -4,6 +4,7 @@ import logging
 import os
 import urllib.request
 import json
+from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -14,6 +15,14 @@ from enhanced_diet_model import EnhancedDietPredictor
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Load configuration
+def load_config():
+    config_path = Path(__file__).parent / "config.json"
+    with open(config_path, 'r') as f:
+        return json.load(f)
+
+CONFIG = load_config()
 
 # Logger setup
 logger = logging.getLogger("gymbite")
@@ -78,8 +87,19 @@ class MealPlanRequest(BaseModel):
 
 def download_model_from_github() -> None:
     """Download the model file from GitHub releases if not present locally."""
-    model_url = "https://github.com/Nouman13388/gymbite_model/releases/download/v1.0/enhanced_diet_predictor.pkl"
-    model_file = "enhanced_diet_predictor.pkl"
+    # Get values from environment or config
+    owner = os.getenv('MODEL_OWNER', CONFIG['model']['default_owner'])
+    repo = os.getenv('MODEL_REPO', CONFIG['model']['default_repo'])
+    version = os.getenv('MODEL_VERSION', CONFIG['model']['default_version'])
+    filename = os.getenv('MODEL_FILENAME', CONFIG['model']['default_filename'])
+    
+    # Use custom URL if provided, otherwise build from template
+    model_url = os.getenv('MODEL_DOWNLOAD_URL')
+    if not model_url:
+        url_template = CONFIG['model']['download_url_template']
+        model_url = url_template.format(owner=owner, repo=repo, version=version, filename=filename)
+    
+    model_file = filename
     
     logger.info(f"Downloading model from {model_url}...")
     try:
@@ -101,9 +121,12 @@ def create_app() -> FastAPI:
     if gemini_api_key:
         os.environ['GOOGLE_API_KEY'] = gemini_api_key
         app.state.gemini_client = genai.Client()
-        logger.info("✅ Gemini API configured successfully")
+        # Store model name from env or config
+        app.state.gemini_model = os.getenv('GEMINI_MODEL', CONFIG['gemini']['default_model'])
+        logger.info(f"✅ Gemini API configured successfully with model: {app.state.gemini_model}")
     else:
         app.state.gemini_client = None
+        app.state.gemini_model = None
         logger.warning("⚠️ GEMINI_API_KEY not found - meal generation will be unavailable")
 
     @app.on_event("startup")
@@ -120,7 +143,8 @@ def create_app() -> FastAPI:
             return  # Already loaded
 
         # Download model if missing
-        if not os.path.exists("enhanced_diet_predictor.pkl"):
+        model_filename = os.getenv('MODEL_FILENAME', CONFIG['model']['default_filename'])
+        if not os.path.exists(model_filename):
             logger.info("Downloading model from GitHub...")
             try:
                 download_model_from_github()
@@ -129,10 +153,10 @@ def create_app() -> FastAPI:
                 raise HTTPException(status_code=503, detail="Model download failed")
 
         try:
-            predictor.load_model()  # assumes default path 'enhanced_diet_predictor.pkl'
+            predictor.load_model(model_filename, CONFIG)
             app.state.predictor = predictor
             app.state.model_loaded = True
-            logger.info("✅ Model loaded successfully on first request")
+            logger.info(f"✅ Model loaded successfully from {model_filename}")
         except Exception as e:
             logger.error("Failed to load model: %s", e)
             raise
@@ -236,9 +260,10 @@ def create_app() -> FastAPI:
 Generate the meal plan now. Return ONLY valid JSON, no markdown formatting."""
 
         try:
-            # Call Gemini API
+            # Call Gemini API with configured model
+            gemini_model = getattr(app.state, "gemini_model", CONFIG['gemini']['default_model'])
             response = gemini_client.models.generate_content(
-                model="gemini-2.0-flash-exp",
+                model=gemini_model,
                 contents=prompt
             )
             response_text = response.text.strip()
@@ -304,5 +329,8 @@ app = create_app()
 
 if __name__ == "__main__":
     import uvicorn
+    host = os.getenv('HOST', CONFIG['server']['default_host'])
+    port = int(os.getenv('PORT', CONFIG['server']['default_port']))
+    uvicorn.run(app, host=host, port=port)
 
     uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
