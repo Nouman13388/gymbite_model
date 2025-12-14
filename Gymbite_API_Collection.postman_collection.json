@@ -24,11 +24,9 @@
                         ],
                         "url": {
                             "raw": "{{base_url}}/health",
-                            "protocol": "http",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "8000",
                             "path": [
                                 "health"
                             ]
@@ -49,14 +47,10 @@
                                 ],
                                 "url": {
                                     "raw": "{{base_url}}/health",
-                                    "protocol": "https",
                                     "host": [
-                                        "huggingface.co"
+                                        "{{base_url}}"
                                     ],
                                     "path": [
-                                        "spaces",
-                                        "Nouman1338",
-                                        "gymbite-model",
                                         "health"
                                     ]
                                 }
@@ -135,14 +129,10 @@
                                 },
                                 "url": {
                                     "raw": "{{base_url}}/predict",
-                                    "protocol": "https",
                                     "host": [
-                                        "huggingface.co"
+                                        "{{base_url}}"
                                     ],
                                     "path": [
-                                        "spaces",
-                                        "Nouman1338",
-                                        "gymbite-model",
                                         "predict"
                                     ]
                                 }
@@ -172,20 +162,18 @@
                         ],
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"Age\": 35,\n  \"Gender\": \"Male\",\n  \"Height_cm\": 180.0,\n  \"Weight_kg\": 85.0,\n  \"BMI\": 26.2,\n  \"Exercise_Frequency\": 6,\n  \"Daily_Steps\": 12000,\n  \"Blood_Pressure_Systolic\": 120,\n  \"Blood_Pressure_Diastolic\": 75,\n  \"Cholesterol_Level\": 170,\n  \"Blood_Sugar_Level\": 90,\n  \"Sleep_Hours\": 8.0,\n  \"Caloric_Intake\": 2500,\n  \"Protein_Intake\": 120,\n  \"Carbohydrate_Intake\": 300,\n  \"Fat_Intake\": 80\n}\n"
+                            "raw": "{\n  \"Age\": 28,\n  \"Gender\": \"Male\",\n  \"Height_cm\": 180.0,\n  \"Weight_kg\": 85.0,\n  \"BMI\": 26.2,\n  \"Exercise_Frequency\": 5,\n  \"Daily_Steps\": 12000,\n  \"Blood_Pressure_Systolic\": 120,\n  \"Blood_Pressure_Diastolic\": 80,\n  \"Cholesterol_Level\": 180,\n  \"Blood_Sugar_Level\": 90,\n  \"Sleep_Hours\": 7.5,\n  \"Caloric_Intake\": 2800,\n  \"Protein_Intake\": 150,\n  \"Carbohydrate_Intake\": 300,\n  \"Fat_Intake\": 80,\n  \"Region\": \"Pakistan\",\n  \"City\": \"Lahore\",\n  \"Dietary_Preference\": \"halal\",\n  \"Fitness_Goal\": \"muscle_gain\",\n  \"Goal_Timeline\": \"moderate\",\n  \"Meal_Frequency\": 4,\n  \"Excluded_Ingredients\": [\"beef\"],\n  \"Allergens\": [\"peanuts\"],\n  \"Budget_Level\": \"medium\",\n  \"Cooking_Time\": \"moderate\",\n  \"Cuisine_Preference\": \"local\",\n  \"Meal_Timing_Preference\": \"balanced\"\n}\n"
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
-                            "protocol": "http",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "8000",
                             "path": [
                                 "predict"
                             ]
                         },
-                        "description": "Sample request for an active male with good health metrics"
+                        "description": "Sample request for active male athlete with personalized preferences (Pakistani, halal, muscle gain goal)"
                     },
                     "response": []
                 },
@@ -206,11 +194,9 @@
                         },
                         "url": {
                             "raw": "{{base_url}}/predict",
-                            "protocol": "http",
                             "host": [
-                                "localhost"
+                                "{{base_url}}"
                             ],
-                            "port": "8000",
                             "path": [
                                 "predict"
                             ]
@@ -220,19 +206,121 @@
                     "response": []
                 }
             ]
+        },
+        {
+            "name": "Meal Generation",
+            "description": "AI-powered personalized meal plan generation",
+            "item": [
+                {
+                    "name": "Generate Meal Plan - Pakistani Halal",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"total_calories\": 2200,\n  \"total_protein\": 165,\n  \"total_carbs\": 247,\n  \"total_fats\": 61,\n  \"meals\": [\n    {\"meal\": \"Breakfast\", \"calories\": 733, \"protein\": 55, \"carbs\": 82.3, \"fats\": 20.3},\n    {\"meal\": \"Lunch\", \"calories\": 733, \"protein\": 55, \"carbs\": 82.3, \"fats\": 20.3},\n    {\"meal\": \"Dinner\", \"calories\": 734, \"protein\": 55, \"carbs\": 82.4, \"fats\": 20.4}\n  ],\n  \"region\": \"Pakistan\",\n  \"city\": \"Karachi\",\n  \"dietary_preference\": \"halal\",\n  \"excluded_ingredients\": [\"beef\", \"pork\"],\n  \"allergens\": [\"peanuts\"],\n  \"budget_level\": \"medium\",\n  \"cooking_time\": \"moderate\",\n  \"cuisine_preference\": \"local\",\n  \"meal_timing_preference\": \"balanced\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/generate-meal-plan",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "generate-meal-plan"
+                            ]
+                        },
+                        "description": "Generate culturally authentic Pakistani halal meal plan with allergen exclusions"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Generate Meal Plan - Vegan Weight Loss",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"total_calories\": 1700,\n  \"total_protein\": 119,\n  \"total_carbs\": 149,\n  \"total_fats\": 57,\n  \"meals\": [\n    {\"meal\": \"Breakfast\", \"calories\": 425, \"protein\": 30, \"carbs\": 37, \"fats\": 14},\n    {\"meal\": \"Lunch\", \"calories\": 510, \"protein\": 36, \"carbs\": 45, \"fats\": 17},\n    {\"meal\": \"Snack\", \"calories\": 255, \"protein\": 18, \"carbs\": 22, \"fats\": 9},\n    {\"meal\": \"Dinner\", \"calories\": 510, \"protein\": 35, \"carbs\": 45, \"fats\": 17}\n  ],\n  \"region\": \"USA\",\n  \"dietary_preference\": \"vegan\",\n  \"excluded_ingredients\": [],\n  \"allergens\": [\"soy\"],\n  \"budget_level\": \"medium\",\n  \"cooking_time\": \"quick\",\n  \"cuisine_preference\": \"international\",\n  \"meal_timing_preference\": \"front_loaded\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/generate-meal-plan",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "generate-meal-plan"
+                            ]
+                        },
+                        "description": "Generate vegan meal plan for weight loss with soy-free requirements"
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Generate Meal Plan - Indian Vegetarian",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"total_calories\": 2400,\n  \"total_protein\": 120,\n  \"total_carbs\": 270,\n  \"total_fats\": 80,\n  \"meals\": [\n    {\"meal\": \"Breakfast\", \"calories\": 600, \"protein\": 30, \"carbs\": 67.5, \"fats\": 20},\n    {\"meal\": \"Mid-Morning Snack\", \"calories\": 300, \"protein\": 15, \"carbs\": 33.7, \"fats\": 10},\n    {\"meal\": \"Lunch\", \"calories\": 650, \"protein\": 32.5, \"carbs\": 73.1, \"fats\": 21.7},\n    {\"meal\": \"Afternoon Snack\", \"calories\": 250, \"protein\": 12.5, \"carbs\": 28.1, \"fats\": 8.3},\n    {\"meal\": \"Dinner\", \"calories\": 600, \"protein\": 30, \"carbs\": 67.5, \"fats\": 20}\n  ],\n  \"region\": \"India\",\n  \"city\": \"Mumbai\",\n  \"dietary_preference\": \"vegetarian\",\n  \"excluded_ingredients\": [\"onion\", \"garlic\"],\n  \"allergens\": [],\n  \"budget_level\": \"low\",\n  \"cooking_time\": \"moderate\",\n  \"cuisine_preference\": \"local\",\n  \"meal_timing_preference\": \"balanced\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{base_url}}/generate-meal-plan",
+                            "host": [
+                                "{{base_url}}"
+                            ],
+                            "path": [
+                                "generate-meal-plan"
+                            ]
+                        },
+                        "description": "Generate traditional Indian vegetarian meal plan (Jain-style: no onion/garlic)"
+                    },
+                    "response": []
+                }
+            ]
         }
     ],
     "variable": [
         {
             "key": "base_url",
-            "value": "https://gymbite-model-480367101608.europe-west1.run.app",
+            "value": "https://gymbite-model.onrender.com",
             "type": "string",
-            "description": "API Base URL. Production Cloud Run deployment: https://gymbite-model-480367101608.europe-west1.run.app. For local development, change to http://localhost:8000"
+            "description": "API Base URL. Production Render deployment: https://gymbite-model.onrender.com. For local development, change to http://localhost:8000"
         },
         {
             "key": "deployment_notes",
-            "value": "PRODUCTION: Using Google Cloud Run deployment at https://gymbite-model-480367101608.europe-west1.run.app. For local testing, change base_url to http://localhost:8000 and run 'uvicorn app:app --port 8000' locally.",
+            "value": "PRODUCTION: Using Render.com deployment at https://gymbite-model.onrender.com (Free tier: 512MB RAM, EU region, auto-sleep after 15min inactivity). For local testing, change base_url to http://localhost:8000 and run 'uvicorn app:app --port 8000' locally.",
             "type": "string"
+        },
+        {
+            "key": "render_url",
+            "value": "https://gymbite-model.onrender.com",
+            "type": "string",
+            "description": "Production URL - Render.com Free Tier"
+        },
+        {
+            "key": "local_url",
+            "value": "http://localhost:8000",
+            "type": "string",
+            "description": "Local development URL"
         }
     ]
 }

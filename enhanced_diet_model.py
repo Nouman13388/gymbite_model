@@ -74,6 +74,112 @@ class EnhancedDietPredictor:
 
         return min(risk_score, 100)
 
+    def adjust_for_fitness_goal(self, tdee, goal, timeline):
+        """Adjust calories based on fitness goal and timeline"""
+        adjustments = {
+            'weight_loss': {'aggressive': -750, 'moderate': -500, 'conservative': -300},
+            'muscle_gain': {'aggressive': 600, 'moderate': 400, 'conservative': 250},
+            'cutting': {'aggressive': -600, 'moderate': -400, 'conservative': -250},
+            'bulking': {'aggressive': 600, 'moderate': 450, 'conservative': 300},
+            'athletic': {'aggressive': 200, 'moderate': 100, 'conservative': 50},
+            'maintenance': {'aggressive': 0, 'moderate': 0, 'conservative': 0}
+        }
+        
+        adjustment = adjustments.get(goal, {}).get(timeline, 0)
+        return tdee + adjustment
+
+    def calculate_macro_ratios(self, goal, dietary_preference):
+        """Calculate protein/carb/fat ratios based on goal and diet"""
+        # Base ratios (protein%, carb%, fat%)
+        goal_ratios = {
+            'weight_loss': (0.35, 0.35, 0.30),
+            'muscle_gain': (0.30, 0.45, 0.25),
+            'cutting': (0.40, 0.30, 0.30),
+            'bulking': (0.25, 0.50, 0.25),
+            'athletic': (0.30, 0.45, 0.25),
+            'maintenance': (0.25, 0.45, 0.30)
+        }
+        
+        # Adjust for dietary preferences
+        protein_pct, carb_pct, fat_pct = goal_ratios.get(goal, (0.25, 0.45, 0.30))
+        
+        if dietary_preference == 'vegan' or dietary_preference == 'vegetarian':
+            protein_pct = max(0.20, protein_pct - 0.05)  # Slightly lower protein
+            carb_pct += 0.05
+        elif dietary_preference == 'keto':
+            fat_pct = 0.70
+            protein_pct = 0.25
+            carb_pct = 0.05
+            
+        return protein_pct, carb_pct, fat_pct
+
+    def calculate_meal_distribution(self, total_calories, protein_g, carbs_g, fats_g, meal_frequency, timing_preference):
+        """Distribute macros across meals based on frequency and timing"""
+        meals = []
+        
+        # Define meal distribution patterns
+        if meal_frequency == 2:
+            meal_names = ['Breakfast', 'Dinner']
+            if timing_preference == 'front_loaded':
+                percentages = [0.60, 0.40]
+            elif timing_preference == 'back_loaded':
+                percentages = [0.40, 0.60]
+            else:  # balanced
+                percentages = [0.50, 0.50]
+        elif meal_frequency == 3:
+            meal_names = ['Breakfast', 'Lunch', 'Dinner']
+            if timing_preference == 'front_loaded':
+                percentages = [0.40, 0.35, 0.25]
+            elif timing_preference == 'back_loaded':
+                percentages = [0.25, 0.35, 0.40]
+            else:  # balanced
+                percentages = [0.33, 0.34, 0.33]
+        elif meal_frequency == 4:
+            meal_names = ['Breakfast', 'Lunch', 'Snack', 'Dinner']
+            if timing_preference == 'front_loaded':
+                percentages = [0.35, 0.30, 0.15, 0.20]
+            elif timing_preference == 'back_loaded':
+                percentages = [0.20, 0.25, 0.15, 0.40]
+            else:  # balanced
+                percentages = [0.28, 0.28, 0.14, 0.30]
+        elif meal_frequency == 5:
+            meal_names = ['Breakfast', 'Mid-Morning Snack', 'Lunch', 'Afternoon Snack', 'Dinner']
+            if timing_preference == 'front_loaded':
+                percentages = [0.30, 0.15, 0.25, 0.10, 0.20]
+            elif timing_preference == 'back_loaded':
+                percentages = [0.20, 0.10, 0.20, 0.15, 0.35]
+            else:  # balanced
+                percentages = [0.25, 0.12, 0.26, 0.12, 0.25]
+        else:  # 6 meals
+            meal_names = ['Breakfast', 'Mid-Morning', 'Lunch', 'Afternoon', 'Dinner', 'Evening']
+            percentages = [0.20, 0.15, 0.20, 0.15, 0.20, 0.10]  # balanced default
+        
+        for i, meal_name in enumerate(meal_names):
+            pct = percentages[i]
+            meals.append({
+                'meal': meal_name,
+                'calories': round(total_calories * pct),
+                'protein': round(protein_g * pct, 1),
+                'carbs': round(carbs_g * pct, 1),
+                'fats': round(fats_g * pct, 1)
+            })
+        
+        return meals
+
+    def build_dietary_constraints(self, user_data):
+        """Package user preferences for meal generation"""
+        return {
+            'region': user_data.get('Region', 'Global'),
+            'city': user_data.get('City'),
+            'dietary_preference': user_data.get('Dietary_Preference', 'omnivore'),
+            'excluded_ingredients': user_data.get('Excluded_Ingredients', []),
+            'allergens': user_data.get('Allergens', []),
+            'budget_level': user_data.get('Budget_Level', 'medium'),
+            'cooking_time': user_data.get('Cooking_Time', 'moderate'),
+            'cuisine_preference': user_data.get('Cuisine_Preference', 'local'),
+            'meal_timing_preference': user_data.get('Meal_Timing_Preference', 'balanced')
+        }
+
     def validate_prediction(self, calories, protein, carbs, fats, bmr):
         """Apply health-safe bounds to predictions"""
         min_calories = bmr * 0.8
@@ -96,19 +202,24 @@ class EnhancedDietPredictor:
         return safe_calories, safe_protein, carbs, fats
 
     def predict(self, user_data):
-        """Make prediction for a single user"""
+        """Make prediction for a single user with enhanced personalization"""
         if self.model is None:
             raise ValueError("Model not trained yet!")
 
         user_df = pd.DataFrame([user_data])
 
-        user_df['BMR'] = self.calculate_bmr(
+        # Calculate base metrics
+        bmr = self.calculate_bmr(
             user_data['Age'], user_data['Weight_kg'],
             user_data['Height_cm'], user_data['Gender']
         )
-        user_df['TDEE'] = self.calculate_tdee(
-            user_df['BMR'].iloc[0], user_data['Exercise_Frequency'], user_data['Daily_Steps']
+        user_df['BMR'] = bmr
+        
+        tdee = self.calculate_tdee(
+            bmr, user_data['Exercise_Frequency'], user_data['Daily_Steps']
         )
+        user_df['TDEE'] = tdee
+        
         user_df['Health_Risk_Score'] = self.calculate_health_risk_score(
             user_data['BMI'], user_data['Blood_Pressure_Systolic'],
             user_data['Blood_Pressure_Diastolic'], user_data['Cholesterol_Level'],
@@ -120,22 +231,66 @@ class EnhancedDietPredictor:
         )
         user_df['Sleep_Quality_Score'] = np.clip(user_data['Sleep_Hours'] / 8 * 10, 0, 10)
 
-        user_features = user_df[self.feature_names]
-        prediction = self.model.predict(user_features)[0]
+        # Get user preferences
+        fitness_goal = user_data.get('Fitness_Goal', 'maintenance')
+        goal_timeline = user_data.get('Goal_Timeline', 'moderate')
+        dietary_preference = user_data.get('Dietary_Preference', 'omnivore')
+        meal_frequency = user_data.get('Meal_Frequency', 3)
+        timing_preference = user_data.get('Meal_Timing_Preference', 'balanced')
 
-        safe_prediction = self.validate_prediction(
-            prediction[0], prediction[1], prediction[2], prediction[3], user_df['BMR'].iloc[0]
+        # Adjust calories for fitness goal
+        adjusted_calories = self.adjust_for_fitness_goal(tdee, fitness_goal, goal_timeline)
+        
+        # Calculate macro ratios based on goal and diet
+        protein_pct, carb_pct, fat_pct = self.calculate_macro_ratios(fitness_goal, dietary_preference)
+        
+        # Calculate macros in grams
+        protein_g = (adjusted_calories * protein_pct) / 4  # 4 cal/g
+        carbs_g = (adjusted_calories * carb_pct) / 4  # 4 cal/g
+        fats_g = (adjusted_calories * fat_pct) / 9  # 9 cal/g
+        
+        # Apply safety validation
+        safe_calories, safe_protein, safe_carbs, safe_fats = self.validate_prediction(
+            adjusted_calories, protein_g, carbs_g, fats_g, bmr
         )
+        
+        # Calculate meal distribution
+        meal_distribution = self.calculate_meal_distribution(
+            safe_calories, safe_protein, safe_carbs, safe_fats,
+            meal_frequency, timing_preference
+        )
+        
+        # Build dietary constraints for meal generation
+        dietary_constraints = self.build_dietary_constraints(user_data)
 
         return {
-            'recommended_calories': round(safe_prediction[0]),
-            'recommended_protein': round(safe_prediction[1], 1),
-            'recommended_carbs': round(safe_prediction[2], 1),
-            'recommended_fats': round(safe_prediction[3], 1),
-            'bmr': round(user_df['BMR'].iloc[0]),
-            'tdee': round(user_df['TDEE'].iloc[0]),
-            'health_risk_score': round(user_df['Health_Risk_Score'].iloc[0]),
-            'activity_level_score': round(user_df['Activity_Level_Score'].iloc[0], 1)
+            'nutritional_targets': {
+                'recommended_calories': round(safe_calories),
+                'recommended_protein': round(safe_protein, 1),
+                'recommended_carbs': round(safe_carbs, 1),
+                'recommended_fats': round(safe_fats, 1),
+                'bmr': round(bmr),
+                'tdee': round(tdee),
+                'adjusted_for_goal': round(adjusted_calories),
+                'macro_split': {
+                    'protein_percent': round(protein_pct * 100),
+                    'carbs_percent': round(carb_pct * 100),
+                    'fats_percent': round(fat_pct * 100)
+                }
+            },
+            'meal_distribution': meal_distribution,
+            'dietary_constraints': dietary_constraints,
+            'health_metrics': {
+                'health_risk_score': round(user_df['Health_Risk_Score'].iloc[0]),
+                'activity_level_score': round(user_df['Activity_Level_Score'].iloc[0], 1),
+                'sleep_quality_score': round(user_df['Sleep_Quality_Score'].iloc[0], 1)
+            },
+            'personalization': {
+                'fitness_goal': fitness_goal,
+                'goal_timeline': goal_timeline,
+                'dietary_preference': dietary_preference,
+                'meal_frequency': meal_frequency
+            }
         }
 
     def save_model(self, filename='enhanced_diet_predictor.pkl'):
