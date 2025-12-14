@@ -7,9 +7,13 @@ import json
 
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import google.generativeai as genai
+from google import genai
+from dotenv import load_dotenv
 
 from enhanced_diet_model import EnhancedDietPredictor
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Logger setup
 logger = logging.getLogger("gymbite")
@@ -95,11 +99,11 @@ def create_app() -> FastAPI:
     # Configure Gemini API
     gemini_api_key = os.getenv('GEMINI_API_KEY')
     if gemini_api_key:
-        genai.configure(api_key=gemini_api_key)
-        app.state.gemini_model = genai.GenerativeModel('gemini-1.5-flash')
+        os.environ['GOOGLE_API_KEY'] = gemini_api_key
+        app.state.gemini_client = genai.Client()
         logger.info("✅ Gemini API configured successfully")
     else:
-        app.state.gemini_model = None
+        app.state.gemini_client = None
         logger.warning("⚠️ GEMINI_API_KEY not found - meal generation will be unavailable")
 
     @app.on_event("startup")
@@ -157,8 +161,8 @@ def create_app() -> FastAPI:
         Generate personalized meal plan using Gemini API.
         Requires GEMINI_API_KEY environment variable.
         """
-        gemini_model = getattr(app.state, "gemini_model", None)
-        if gemini_model is None:
+        gemini_client = getattr(app.state, "gemini_client", None)
+        if gemini_client is None:
             raise HTTPException(
                 status_code=503, 
                 detail="Meal generation unavailable - GEMINI_API_KEY not configured"
@@ -233,7 +237,10 @@ Generate the meal plan now. Return ONLY valid JSON, no markdown formatting."""
 
         try:
             # Call Gemini API
-            response = gemini_model.generate_content(prompt)
+            response = gemini_client.models.generate_content(
+                model="gemini-2.0-flash-exp",
+                contents=prompt
+            )
             response_text = response.text.strip()
             
             # Remove markdown code blocks if present

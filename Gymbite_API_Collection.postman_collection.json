@@ -1,10 +1,10 @@
 {
     "info": {
-        "_postman_id": "gymbite-nutrition-api-v1",
-        "name": "Gymbite Nutrition API",
-        "description": "Complete REST API collection for Gymbite ML Nutrition Recommendation System. Test endpoints, manage nutrition predictions, and health checks.",
+        "_postman_id": "gymbite-nutrition-api-v2",
+        "name": "Gymbite Nutrition API - Enhanced with AI",
+        "description": "Complete REST API collection for Gymbite ML Nutrition & AI Meal Generation System.\n\nFeatures:\n- ML-based nutrition predictions with 28+ personalization inputs\n- AI-powered culturally authentic meal plans using Gemini 2.0\n- Support for 6 fitness goals × 3 timelines = 18 configurations\n- Regional cuisines: Pakistan, India, UAE, USA, UK\n- Dietary preferences: halal, vegan, vegetarian, kosher, etc.\n- Meal distribution: 2-6 meals with timing preferences\n\nBase URL (Local): https://gymbite-model.onrender.com\nBase URL (Production): https://gymbite-model.onrender.com",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        "version": "1.0.0"
+        "version": "2.0.0"
     },
     "item": [
         {
@@ -303,11 +303,11 @@
             "key": "base_url",
             "value": "https://gymbite-model.onrender.com",
             "type": "string",
-            "description": "API Base URL. Production Render deployment: https://gymbite-model.onrender.com. For local development, change to http://localhost:8000"
+            "description": "API Base URL. Local: https://gymbite-model.onrender.com | Production: https://gymbite-model.onrender.com"
         },
         {
             "key": "deployment_notes",
-            "value": "PRODUCTION: Using Render.com deployment at https://gymbite-model.onrender.com (Free tier: 512MB RAM, EU region, auto-sleep after 15min inactivity). For local testing, change base_url to http://localhost:8000 and run 'uvicorn app:app --port 8000' locally.",
+            "value": "LOCAL: Testing with local server at https://gymbite-model.onrender.com. PRODUCTION: Render.com deployment at https://gymbite-model.onrender.com (Free tier: 512MB RAM, EU region, auto-sleep after 15min). Switch base_url for production testing.",
             "type": "string"
         },
         {
@@ -318,7 +318,7 @@
         },
         {
             "key": "local_url",
-            "value": "http://localhost:8000",
+            "value": "https://gymbite-model.onrender.com",
             "type": "string",
             "description": "Local development URL"
         }
